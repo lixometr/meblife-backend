@@ -8,10 +8,10 @@ router.route('/')
   .post((...args) => controller.create(...args))
 
 router.get('/primary', (...args) => controller.getPrimaryCategories(...args))
-
+router.put('/:id', (...args) => controller.update(...args))
 
 router.route('/:slug')
-  .put((...args) => controller.update(...args))
+  // .put()
   .get((...args) => controller.findBySlug(...args))
   .delete((...args) => controller.remove(...args))
 

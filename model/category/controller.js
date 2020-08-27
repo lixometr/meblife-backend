@@ -5,8 +5,9 @@ const AppError = require('../../helpers/error')
 class CategoryController extends Controller {
     async update(req, res, next) {
         try {
-
-            const result = await this.facade.update({ slug: req.params.slug }, req.body)
+            const result = await this.facade.update({
+                _id: req.params.id
+            }, req.body)
             res.json(result);
         } catch (err) {
             next(err)

@@ -5,7 +5,7 @@ const attributeValue = require('./model/attributeValue/router')
 const appModule = require('./model/module/router')
 const moduleGroup = require('./model/moduleGroup/router')
 const language = require('./model/language/router')
-// const productCurrency = require('./model/productCurrency/router')
+const productCurrency = require('./model/currency/router')
 // const productLabel = require('./model/productLabel/router')
 const looks = require('./model/looks/router')
 const showroom = require('./model/showroom/router')
@@ -16,11 +16,14 @@ const user = require('./model/user/router')
 const product = require('./model/product/router')
 
 router.route('/').get((req, res) => {
-  res.json({ message: 'Example API!' })
+  res.json({
+    message: 'Example API!'
+  })
 })
 router.use('/attribute-value', attributeValue)
 
 router.use('/module', appModule)
+router.use('/currency', productCurrency)
 
 router.use('/module-group', moduleGroup)
 

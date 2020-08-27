@@ -2,7 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const languageSchema = new Schema({
-  slug: String,
+  slug: {
+    type: String,
+    unique: true
+  },
   name: String
 })
 
