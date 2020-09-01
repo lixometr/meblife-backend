@@ -44,18 +44,13 @@ sku: "463"
 */
 
 
-const currencySchema = new Schema({
-  currencyId: {
-    type: Schema.Types.ObjectId,
-    ref: "ProductCurrency"
-  },
-  value: String
-})
 const ProductSchema = new Schema({
   name: [Translation],
   description: [Translation],
-  price: [currencySchema],
-  old_price: [currencySchema],
+  // test
+  price: String,
+  // test
+  old_price: String,
   is_available: Boolean,
   available_stock: Number,
   available_stock_manufacturer: Number,
@@ -84,7 +79,10 @@ const ProductSchema = new Schema({
       ref: "ProductLabel"
     }
   ],
-  default_image: Image,
+  default_image: {
+    type: Image,
+    default: () => ({})
+  },
   size_image: Image,
   feature_images: [Image],
   product_images: [Image],

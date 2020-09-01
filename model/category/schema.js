@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const Translation = require('../Translation');
 const Image = require('../Image');
+const Modification = require('./modification')
 const categorySchema = new Schema({
   name: [Translation],
   image: Image,
@@ -10,7 +11,7 @@ const categorySchema = new Schema({
     type: [Translation],
     index: true,
   },
-  product_mask: String,
+  product_mask: [Translation],
   // Выводить продукты?
   show_products: {
     type: Boolean,
@@ -27,5 +28,6 @@ const categorySchema = new Schema({
     default: () => null
   }
 })
+
 
 module.exports = categorySchema

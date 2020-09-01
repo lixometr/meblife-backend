@@ -5,15 +5,9 @@ const mongoose = require('mongoose')
 class CategoryFacade extends Facade {
     constructor(...args) {
         super(...args)
-        this.fieldsToTranslate = ['name', 'slug']
+        this.fieldsToTranslate = ['name', 'slug', 'product_mask']
     }
-    async findBySlug(slug, langId) {
-        const cat = await this.Model.findOne({ slug: { $elemMatch: { value: slug, langId: langId } } })
-        console.log('params: ', slug, langId)
-        console.log(cat)
 
-        return cat
-    }
     async findParentsById(id) {
         const findParent = async (startId, arr) => {
             if (!arr) arr = []

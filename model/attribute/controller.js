@@ -1,16 +1,21 @@
 const Controller = require('../../lib/controller')
-const userFacade = require('./facade')
-
+const attributeFacade = require('./facade')
+const Modification = require('./modification')
 class AttributeController extends Controller {
-    findById(req, res, next) {
-        const attribute = await this.facade.findById(req.params.id);
-        let nameLeng = attribute.name.filter(text => text.lang === req.query.lang);
-        if(!nameLeng) {
-            nameLeng = attribute.name.find(text => text.leng === config.defaultLeng);
+    // create(req, res, next ){ {
+    //     console.log(10)
+    // }}
+    async findBySlug(req, res, next) {
+        try {
+            const attribute =  await this.facade.findBySlug(req.params.slug)
+            const instance = new Modification(attribute)
+            await instance.init()
+            res.json(instance.full())
+        } catch(err) {
+            next(err)
         }
-        attribute.name = (nameLeng && nameLeng[0] && nameLeng[0].value) || '';
-
     }
 }
 
-module.exports = new AttributeController(userFacade)
+
+module.exports = new AttributeController(attributeFacade)

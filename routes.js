@@ -2,6 +2,8 @@ const Router = require('express').Router
 const router = new Router()
 
 const attributeValue = require('./model/attributeValue/router')
+const attribute = require('./model/attribute/router')
+const attributeGroup = require('./model/attributeGroup/router')
 const appModule = require('./model/module/router')
 const moduleGroup = require('./model/moduleGroup/router')
 const language = require('./model/language/router')
@@ -20,7 +22,10 @@ router.route('/').get((req, res) => {
     message: 'Example API!'
   })
 })
+router.use('/attribute', attribute)
+
 router.use('/attribute-value', attributeValue)
+router.use('/attribute-group', attributeGroup)
 
 router.use('/module', appModule)
 router.use('/currency', productCurrency)

@@ -8,8 +8,11 @@ router.route('/')
   .post((...args) => controller.create(...args))
 
 router.get('/primary', (...args) => controller.getPrimaryCategories(...args))
-router.put('/:id', (...args) => controller.update(...args))
 
+router.route('/id/:id')
+  .get((...args) => controller.findById(...args))
+  .put((...args) => controller.update(...args))
+  
 router.route('/:slug')
   // .put()
   .get((...args) => controller.findBySlug(...args))
