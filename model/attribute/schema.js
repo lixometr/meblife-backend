@@ -12,7 +12,8 @@ const AttributeSchema = new Schema({
 
   // decimal - range slider, values - обычное значение
   attribute_type: {
-    type: String
+    type: String,
+    default: "values"
   },
   slug: [Translation],
   groupId: {

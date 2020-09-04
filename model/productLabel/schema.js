@@ -4,7 +4,7 @@ const Translation = require('../Translation');
 const productLabelSchema = new Schema({
   color: String,
   background_color: String,
-  text: [Translation],
+  name: [Translation],
   slug: [Translation]
 })
 

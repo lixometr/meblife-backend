@@ -5,7 +5,8 @@ const config = {
     },
     mongo: {
       url: process.env.MONGO_DB_URI || 'mongodb://localhost/example-api'
-    }
+    },
+    productsPerPage: 30
   }
   
   module.exports = config

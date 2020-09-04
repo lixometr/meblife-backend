@@ -6,4 +6,12 @@ module.exports = class ManufacturerModification extends Modification {
         this.item = facade.translate(this.item, this.langId, this.defaultLangId)
         return this
     }
+    toINFO() {
+        return {
+            _id: this.item._id,
+            name: this.item.name,
+            slug: this.item.slug,
+            image: this.item.image,
+        }
+    }
 }

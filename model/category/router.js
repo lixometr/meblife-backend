@@ -24,5 +24,6 @@ router.get('/:slug/parents', (...args) => controller.getParentList(...args))
 router.get('/:slug/children', (...args) => controller.getChildren(...args))
 router.get('/:slug/children-all', (...args) => controller.getChildrenAll(...args))
 router.get('/:slug/products', (...args) => productController.getProductsByCategorySlug(...args))
+router.get('/:slug/filters', (...args) => productController.getProductFiltersByCategorySlug(...args))
 
 module.exports = router

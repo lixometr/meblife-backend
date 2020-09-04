@@ -93,7 +93,7 @@ class CategoryController extends Controller {
         try {
             const result = await this.facade.findWithoutParent()
             const translatedResult = result.map(item => {
-                const instance = new Modification(item._doc, {langId: req.request.language.id, defaultLangId: req.settings.language.id})
+                const instance = new Modification(item, {langId: req.request.language.id, defaultLangId: req.settings.language.id})
                 instance.translate()
                 return instance.toJSON()
             })
@@ -103,6 +103,8 @@ class CategoryController extends Controller {
             next(err)
         }
     }
+
+    
 
 }
 

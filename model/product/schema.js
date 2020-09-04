@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const Translation = require('../Translation');
 const Image = require('../Image');
+const File = require('../File');
 /*
 available: true
 available_stock: 8
@@ -47,38 +48,44 @@ sku: "463"
 const ProductSchema = new Schema({
   name: [Translation],
   description: [Translation],
-  // test
-  price: String,
-  // test
-  old_price: String,
+  // если цены больше чем 500, то доставка бесплатная
+  price: Number,
+  old_price: Number,
   is_available: Boolean,
-  available_stock: Number,
-  available_stock_manufacturer: Number,
-  delivery_costs: Number,
-  // Разобраться с доставкой (привезем получите)
+  // Если тут не 0, то доставка 24 часа
+  available_stock: {
+    type: Number,
+    default: 0
+  },
+  available_stock_manufacturer: {
+    type: Number,
+    default: 0
+  },
+  // Дата отправки (просто дата)
   order_until: Date,
-  delivery_at: String,
-  delivery_days: Number,
-
+  // Кол-во дней доставки: delivery_at - Date.now()
+  delivery_at: Date,
   slug: {
     type: [Translation],
     index: true
   },
   sku: String,
- 
+
   // Акции
   promotion: {
-    promotion_type: String,
-    promotion_value: String,
+    promotion_value: Number,
     end_at: Date
   },
   // Метки
-  labels: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "ProductLabel"
-    }
-  ],
+  labels: {
+    type: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "ProductLabel"
+      }
+    ],
+    default: () => ([])
+  },
   default_image: {
     type: Image,
     default: () => ({})
@@ -94,18 +101,21 @@ const ProductSchema = new Schema({
       ref: "Product"
     }
   ],
-  attributes: [
-    {
-      name: {
-        type: Schema.Types.ObjectId,
-        ref: "Attribute"
-      },
-      value: [{
-        type: Schema.Types.ObjectId,
-        ref: "AttributeValue"
-      }]
-    }
-  ],
+  attributes: {
+    type: [
+      {
+        name: {
+          type: Schema.Types.ObjectId,
+          ref: "Attribute"
+        },
+        value: [{
+          type: Schema.Types.ObjectId,
+          ref: "AttributeValue"
+        }]
+      }
+    ],
+    default: () => ([])
+  },
   manufacturer: {
     type: Schema.Types.ObjectId,
     ref: "Manufacturer"
@@ -120,7 +130,7 @@ const ProductSchema = new Schema({
       ref: "Category"
     }
   ],
-
+  product_files: [File],
   created_at: {
     type: Date,
     default: Date.now
@@ -129,7 +139,17 @@ const ProductSchema = new Schema({
     type: Date,
     default: Date.now
   }
+}, { toJSON: { virtuals: true } })
 
+ProductSchema.virtual('delivery_days').get(function () {
+  if (!this.delivery_at) return
+  const diff = this.delivery_at.getTime() - new Date().getTime()
+  const days = diff / (1000 * 60 * 60 * 24)
+  return days.toString()
+})
+ProductSchema.virtual('delivery_24').get(function () {
+  if (this.available_stock) return true
+  return false
 })
 
 module.exports = ProductSchema
