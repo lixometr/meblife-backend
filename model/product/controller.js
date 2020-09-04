@@ -70,7 +70,6 @@ class ProductController extends Controller {
             const sortCheck = ['cheap', 'expansive', 'popular', 'sale', 'new']
             let sortBy = req.query.sort_by
             if (!sortCheck.includes(sortBy)) sortBy = 'popular'
-            let deliverySort = req.query.delivery_sort || null
             let sendFilters = req.query.need_filters || false
             if (filters) {
                 try {
@@ -96,7 +95,7 @@ class ProductController extends Controller {
                 modProducts = this.facade.filterProducts(modProducts, filters)
 
             }
-            modProducts = this.facade.sortProducts(modProducts, sortBy, deliverySort)
+            modProducts = this.facade.sortProducts(modProducts, sortBy)
 
 
             let totalPages = modProducts.length / perProductPage

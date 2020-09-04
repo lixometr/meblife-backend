@@ -48,7 +48,7 @@ class ProductFacade extends Facade {
     /**
      * 
      * @param {Array} products 
-     * @param {Object} filters {price: [], manufacturer: 'slug', labels: ['slug'], delivery: '24h' | '14' | '30', attributes: [{name: 'slug', value: ['slug']}]}
+     * @param {Object} filters {price: [], manufacturer: ['slug'], labels: ['slug'], delivery: '24h' | '14' | '30', attributes: [{name: 'slug', value: ['slug']}]}
      */
     filterProducts(products, filters) {
         if (!filters) return products
@@ -59,7 +59,8 @@ class ProductFacade extends Facade {
                 if (product.price > price[1] || product.price < price[0]) return false
             }
             if (filters.manufacturer) {
-                if (product.manufacturer.slug !== filters.manufacturer) return false
+                const check = filters.manufacturer.map(manufacturer => product.manufacturer.slug === manufacturer)
+                if (check.includes(false)) return false
             }
             if (filters.labels) {
                 const check = filters.labels.map(label => product.labels.findIndex(pLabel => pLabel.slug === label) >= 0)
@@ -132,7 +133,7 @@ class ProductFacade extends Facade {
      * @param {Array} products - 
      */
     getFilters(products) {
-        if(_.isEmpty(products)) return {}
+        if (_.isEmpty(products)) return {}
         console.log(products)
         let filters = {}
         products.forEach(product => {
