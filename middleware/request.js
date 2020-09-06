@@ -1,6 +1,6 @@
 const languageFacade = require('../model/language/facade')
 const currencyFacade = require('../model/currency/facade')
-
+const AppError = require('../helpers/error')
 module.exports = () => async (req, res, next) => {
     req.request = {};
 
@@ -16,9 +16,9 @@ module.exports = () => async (req, res, next) => {
         const queryCurrency = req.query.currency
         let currency = req.settings.currency
         if (queryCurrency) {
-            const currenctBySlug = await currencyFacade.findBySlug(queryCurrency)
-            if (currenctBySlug) {
-                currency = currenctBySlug
+            const currencyBySlug = await currencyFacade.findBySlug(queryCurrency)
+            if (currencyBySlug) {
+                currency = currencyBySlug
             }
         }
         req.request.language = lang

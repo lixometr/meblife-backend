@@ -1,6 +1,8 @@
 const controller = require('./controller')
 const { Router } = require('express')
 const router = Router()
+const isAuthAdmin = require('../../middleware/isAuthAdmin')
+const isAuth = require('../../middleware/isAuthAdmin')
 router
   .get('/', (...args) => controller.find(...args))
 router
@@ -15,6 +17,11 @@ router.route('/id/:id')
 router.route('/:slug')
   .put((...args) => controller.update(...args))
   .get((...args) => controller.getBySlug(...args))
+  .delete((...args) => controller.remove(...args))
+
+router.route('/admin/:slug')
+  .put((...args) => controller.update(...args))
+  .get(isAuthAdmin, (...args) => controller.getBySlug(...args))
   .delete((...args) => controller.remove(...args))
 
 router.get('/:id/categories', (...args) => controller.getCategories(...args))

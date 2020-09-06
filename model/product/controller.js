@@ -37,7 +37,12 @@ class ProductController extends Controller {
             const product = await this.facade.findBySlug(req.params.slug, req.request.language.id)
             if (!product) throw new AppError(404)
 
-            const instance = new Modification(product, { langId: req.request.language.id, defaultLangId: req.settings.language.id })
+            const instance = new Modification(product, {
+                langId: req.request.language.id,
+                defaultLangId: req.settings.language.id,
+                currency: req.request.currency,
+                defaultCurrency: req.settings.currency
+            })
             await instance.init()
             await instance.groupAttrs()
 
@@ -85,7 +90,12 @@ class ProductController extends Controller {
             const products = await this.facade.findByCategoryId(category._id)
             if (!products) throw new AppError(404)
             let modProducts = products.map(async product => {
-                const instance = new Modification(product, { langId: req.request.language.id, defaultLangId: req.settings.language.id })
+                const instance = new Modification(product, {
+                    langId: req.request.language.id,
+                    defaultLangId: req.settings.language.id,
+                    currency: req.request.currency,
+                    defaultCurrency: req.settings.currency
+                })
                 await instance.init()
                 return instance.toJSON()
             })
@@ -122,7 +132,12 @@ class ProductController extends Controller {
         try {
             const products = await this.facade.findSimilarProductsBySlug(req.params.slug, req.request.language.id)
             let instanceProducts = products.map(async product => {
-                const instance = new Modification(product, { langId: req.request.language.id, defaultLangId: req.settings.language.id })
+                const instance = new Modification(product, {
+                    langId: req.request.language.id,
+                    defaultLangId: req.settings.language.id,
+                    currency: req.request.currency,
+                    defaultCurrency: req.settings.currency
+                })
                 await instance.init()
                 return instance.toINFO()
             })
@@ -155,7 +170,12 @@ class ProductController extends Controller {
             if (!category) throw new AppError(404)
             let products = await this.facade.findByCategoryId(category._id)
             products = products.map(async product => {
-                const instance = new Modification(product, { langId: req.request.language.id, defaultLangId: req.settings.language.id })
+                const instance = new Modification(product, {
+                    langId: req.request.language.id,
+                    defaultLangId: req.settings.language.id,
+                    currency: req.request.currency,
+                    defaultCurrency: req.settings.currency
+                })
                 await instance.init()
                 return instance.toJSON()
             })

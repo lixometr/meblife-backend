@@ -8,7 +8,7 @@ const appModule = require('./model/module/router')
 const moduleGroup = require('./model/moduleGroup/router')
 const language = require('./model/language/router')
 const productCurrency = require('./model/currency/router')
-// const productLabel = require('./model/productLabel/router')
+const productLabel = require('./model/productLabel/router')
 const looks = require('./model/looks/router')
 const showroom = require('./model/showroom/router')
 const inspiration = require('./model/inspiration/router')
@@ -34,9 +34,8 @@ router.use('/module-group', moduleGroup)
 
 router.use('/language', language)
 
-// router.use('/product-currency', product-currency)
 
-// router.use('/product-label', productLabel)
+router.use('/product-label', productLabel)
 
 router.use('/looks', looks)
 router.use('/showroom', showroom)
