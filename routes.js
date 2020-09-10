@@ -1,6 +1,9 @@
 const Router = require('express').Router
 const router = new Router()
 
+const adminUser = require('./model/adminUser/router')
+const authAdmin = require('./model/authAdmin/router')
+const auth = require('./model/auth/router')
 const attributeValue = require('./model/attributeValue/router')
 const attribute = require('./model/attribute/router')
 const attributeGroup = require('./model/attributeGroup/router')
@@ -16,12 +19,21 @@ const manufacturer = require('./model/manufacturer/router')
 const category = require('./model/category/router')
 const user = require('./model/user/router')
 const product = require('./model/product/router')
+const upload = require('./model/upload/router')
 
 router.route('/').get((req, res) => {
   res.json({
     message: 'Example API!'
   })
 })
+router.use('/upload', upload)
+
+router.use('/admin-user', adminUser)
+
+router.use('/auth-admin', authAdmin)
+
+router.use('/auth', auth)
+
 router.use('/attribute', attribute)
 
 router.use('/attribute-value', attributeValue)

@@ -3,7 +3,7 @@ const CurrencyFacade = require('./facade')
 const AppError = require('../../helpers/error')
 
 class CurrencyController extends Controller {
-    async find(req, res, next) {
+    async findAll(req, res, next) {
         try {
             const items = await this.facade.find()
             if (!items) throw new AppError(404)

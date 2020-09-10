@@ -1,7 +1,6 @@
 const Controller = require('../../lib/controller')
 const productFacade = require('./facade')
 const categoryFacade = require('../category/facade')
-const { getLangText } = require('../../helpers/functions');
 const AppError = require('../../helpers/error');
 const Modification = require('./modification');
 const config = require('../../config');
@@ -13,30 +12,31 @@ class ProductController extends Controller {
         super(...args)
 
     }
-    async create(req, res, next) {
+    // Сделать пагинацию
+    async findAll(req, res, next) {
         try {
-            const doc = await this.facade.create(req.body)
-            res.status(201).json(doc)
+            const page = req.query.page
+            const products = await this.facade.findAll()
+            const resolvers = products.map(async product => {
+                const instance = new Modification(product, { langId: req.request.language._id, defaultLangId: req.settings.language._id, currency: req.request.currency, defaultCurrency: req.settings.currency })
+                await instance.init()
+                return instance.toINFO()
+            })
+            const items = await Promise.all(resolvers)
+            res.json(items)
         } catch (err) {
             next(err)
         }
     }
-    async getById(req, res, next) {
-        try {
-            const product = await this.facade.findById(req.params.id);
-            if (!product) throw new AppError(404)
-            const productToSend = this.facade.translate(product.toJSON(), req.request.language.id, req.settings.language.id)
 
-            res.json(productToSend);
-        } catch (err) {
-            next(err);
-        }
-    }
-    async getBySlug(req, res, next) {
+    async findById(req, res, next) {
         try {
-            const product = await this.facade.findBySlug(req.params.slug, req.request.language.id)
+            const product = await this.facade.findById(req.params.id, req.request.language.id)
             if (!product) throw new AppError(404)
-
+            if (req.adminUser) {
+                res.json(product)
+                return
+            }
             const instance = new Modification(product, {
                 langId: req.request.language.id,
                 defaultLangId: req.settings.language.id,
@@ -45,20 +45,24 @@ class ProductController extends Controller {
             })
             await instance.init()
             await instance.groupAttrs()
-
             res.json(instance.toJSON())
         } catch (err) {
             next(err)
         }
     }
-    async update(req, res, next) {
+    async findBySlug(req, res, next) {
         try {
-            const result = await this.facade.update({ _id: req.params.id }, { $set: req.body })
-            res.json(result)
+            const product = await this.facade.findBySlug(req.params.slug, req.request.language.id)
+            if (!product) throw new AppError(404)
+            req.params.id = product._id.toString()
+            await this.findById(req, res, next)
         } catch (err) {
             next(err)
         }
+
+
     }
+
     /**
      * 
      * @param ?filters=JSON ?sort_by
@@ -66,7 +70,13 @@ class ProductController extends Controller {
     async getProductsByCategorySlug(req, res, next) {
         try {
             // Страницы
-            const page = req.query.page;
+            let page = parseInt(req.query.page)
+            if (isNaN(page)) {
+                page = 0
+            } else {
+                page -= 1
+            }
+
             const perProductPage = config.productsPerPage;
             const category = await categoryFacade.findBySlug(req.params.slug, req.request.language.id)
             if (!category) throw new AppError(400)
@@ -117,7 +127,7 @@ class ProductController extends Controller {
                     totalProducts: modProducts.length,
                     totalPages,
                 },
-                products: modProducts.slice(0, perProductPage)
+                products: modProducts.slice(page, perProductPage)
             }
             if (sendFilters) {
                 toSend.filters = this.facade.getFilters(modProducts)
@@ -192,17 +202,7 @@ class ProductController extends Controller {
 
     }
 
-    async test(req, res, next) {
 
-        try {
-            const slug = req.params.slug
-            const product = await this.facade.test(slug, req, req.request.language.id)
-            res.json(product)
-        }
-        catch (err) {
-            next(err)
-        }
-    }
 }
 
-module.exports = new ProductController(productFacade)
+module.exports = new ProductController(productFacade, Modification)

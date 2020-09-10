@@ -7,7 +7,10 @@ module.exports = () => (err, req, res, next) => {
     } else {
       res.sendStatus(err.statusCode)
     }
-
+    return
+  }
+  if (err.name === 'JsonWebTokenError') {
+    res.status(401).json({status: 401, message: "Unauthorized"})
     return
   }
   res.status(500).json({ error: err.message, status: 500 })

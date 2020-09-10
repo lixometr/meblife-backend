@@ -9,16 +9,20 @@ class ProductFacade extends Facade {
         this.fieldsToPopulate = ['manufacturer', 'category', 'attributes.name', 'attributes.value', 'primary_category']
 
     }
+    async deleteById(id) {
+        const result = await this.Model.deleteOne({_id: id.toString()})
+        return result
+    }
+    async create(data) {
+        const result = await this.Model.create(data)
+        return result
+    }
     async populateFields(product) {
         this.fieldsToPopulate.forEach(async field => {
             await product.populate(field).execPopulate()
         })
         return product
 
-    }
-    async findById(...args) {
-        const result = await super.findById(...args)
-        return result
     }
     /**
      * 
@@ -151,7 +155,7 @@ class ProductFacade extends Facade {
             const labels = product.labels
             labels.forEach(label => filters.labels.push({ name: label.name, slug: label.slug, _id: label._id }))
             product.attributes.forEach(attr => {
-                const attrIdx = filters.attributes.findIndex(fAttr => fAttr.name._id === attr.name._id)
+                const attrIdx = filters.attributes.findIndex(fAttr => fAttr.name._id.toString() === attr.name._id.toString())
                 if (attrIdx >= 0) {
                     if (!filters.attributes[attrIdx].value) {
                         filters.attributes[attrIdx].value = []

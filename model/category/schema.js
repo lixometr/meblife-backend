@@ -2,11 +2,16 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const Translation = require('../Translation');
 const Image = require('../Image');
-const Modification = require('./modification')
 const categorySchema = new Schema({
   name: [Translation],
-  image: Image,
-  bg_image: Image,
+  image: {
+    type: Image,
+    default: () => ({})
+  },
+  bg_image: {
+    type: Image,
+    defualt: () => ({})
+  },
   slug: {
     type: [Translation],
     index: true,
@@ -26,6 +31,10 @@ const categorySchema = new Schema({
     ref: "Category",
     index: true,
     default: () => null
+  },
+  created_at: {
+    type: Date,
+    default: Date.now
   }
 })
 

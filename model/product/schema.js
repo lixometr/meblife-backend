@@ -44,7 +44,10 @@ size_images: [{id: 485,…}]
 sku: "463"
 */
 
-
+const Promotion = new Schema({
+  value: Number,
+  end_at: Date
+})
 const ProductSchema = new Schema({
   name: [Translation],
   description: [Translation],
@@ -73,8 +76,8 @@ const ProductSchema = new Schema({
 
   // Акции
   promotion: {
-    promotion_value: Number,
-    end_at: Date
+    type: Promotion,
+    default: () => ({})
   },
   // Метки
   labels: {
@@ -95,7 +98,7 @@ const ProductSchema = new Schema({
   product_images: [Image],
 
   // Модификации продукта (одинаковые продукты, но с разными атрибутами)
-  product_modifications: [
+  product_versions: [
     {
       type: Schema.Types.ObjectId,
       ref: "Product"
@@ -118,11 +121,12 @@ const ProductSchema = new Schema({
   },
   manufacturer: {
     type: Schema.Types.ObjectId,
-    ref: "Manufacturer"
+    ref: "Manufacturer",
   },
   primary_category: {
     type: Schema.Types.ObjectId,
-    ref: "Category"
+    ref: "Category",
+
   },
   category: [
     {
@@ -144,11 +148,15 @@ const ProductSchema = new Schema({
 ProductSchema.virtual('delivery_days').get(function () {
   if (!this.delivery_at) return
   const diff = this.delivery_at.getTime() - new Date().getTime()
-  const days = diff / (1000 * 60 * 60 * 24)
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
   return days.toString()
 })
 ProductSchema.virtual('delivery_24').get(function () {
   if (this.available_stock) return true
+  return false
+})
+ProductSchema.virtual('free_delivery').get(function () {
+  if (this.price < 500) return true
   return false
 })
 

@@ -113,7 +113,6 @@ module.exports = class ProductModification extends Modification {
         attributes.map(attr => {
 
             const groupName = new AttributeGroupModification(attr.name.groupId, this.options).translate().toJSON()
-            console.group(groupName)
             const itemIdx = groupAttrs.findIndex(grAttr => grAttr.name.toLowerCase() === groupName.name.toLowerCase())
 
             if (itemIdx < 0) {

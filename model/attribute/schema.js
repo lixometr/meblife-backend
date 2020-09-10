@@ -19,6 +19,10 @@ const AttributeSchema = new Schema({
   groupId: {
     type: Schema.Types.ObjectId,
     ref: 'AttributeGroup'
+  },
+  created_at: {
+    type: Date,
+    default: Date.now
   }
 })
 

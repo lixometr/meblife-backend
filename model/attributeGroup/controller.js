@@ -16,4 +16,4 @@ class AttributeGroupController extends Controller {
 }
 
 
-module.exports = new AttributeGroupController(AttributeGroupFacade)
+module.exports = new AttributeGroupController(AttributeGroupFacade, Modification)

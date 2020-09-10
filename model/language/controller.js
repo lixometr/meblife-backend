@@ -2,7 +2,7 @@ const Controller = require('../../lib/controller')
 const languageFacade = require('./facade')
 
 class LanguageController extends Controller {
-    async find(req, res, next) {
+    async findAll(req, res, next) {
         try {
             const items = await this.facade.find()
             if (!items) throw new AppError(404)
