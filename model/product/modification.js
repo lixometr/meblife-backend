@@ -12,7 +12,8 @@ module.exports = class ProductModification extends Modification {
     }
 
     async makeTitle() {
-        const mask = new CategoryModification(this.item.primary_category, this.options).translate().toJSON().product_mask
+        const cat = new CategoryModification(this.item.primary_category, this.options).translate().toJSON() || {}
+        const mask = cat.product_mask || ''
         const attrs = this.item.attributes
         const matches = mask.match(/\{\{.+?\}\}/gi)
         let newName = mask

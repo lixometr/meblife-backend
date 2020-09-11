@@ -3,6 +3,7 @@ const facade = require('./facade')
 module.exports = class CategoryModification extends Modification {
 
     translate() {
+        if(!this.item) return this
         this.item = facade.translate(this.item, this.langId, this.defaultLangId)
         return this
     }

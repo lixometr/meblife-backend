@@ -17,4 +17,12 @@ module.exports = class AttributeValueModification extends Modification {
             attributeId: this.item.attributeId,
         }
     }
+    toADMIN() {
+        return {
+            _id: this.item._id,
+            name: this.item.name,
+            slug: this.item.slug,
+            attributeId: this.item.attributeId,
+        }
+    }
 }

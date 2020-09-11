@@ -17,27 +17,7 @@ class AttributeValueController extends Controller {
             next(err)
         }
     }
-    async findById(req, res, next) {
-        try {
-            const attribute = await this.facade.findById(req.params.id)
-            if (!attribute) throw new AppError(404)
-            const instance = new Modification(attribute, { langId: req.request.language._id, defaultLangId: req.request.language._id })
-            await instance.init()
-            res.json(instance.toINFO())
-        } catch (err) {
-            next(err)
-        }
-    }
-    async findBySlug(req, res, next) {
-        try {
-            const attribute = await this.facade.findBySlug(req.params.slug, req.request.language.id)
-            const instance = new Modification(attribute, { langId: req.request.language._id, defaultLangId: req.request.language._id })
-            await instance.init()
-            res.json(instance.toINFO())
-        } catch (err) {
-            next(err)
-        }
-    }
+
 }
 
-module.exports = new AttributeValueController(attributeValueFacade)
+module.exports = new AttributeValueController(attributeValueFacade, Modification)

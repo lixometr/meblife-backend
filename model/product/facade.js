@@ -2,6 +2,7 @@ const Facade = require('../../lib/facade')
 const ProductSchema = require('./schema')
 const AppError = require('../../helpers/error')
 const _ = require('lodash')
+const AttributeModification = require('../attribute/modification')
 class ProductFacade extends Facade {
     constructor(...args) {
         super(...args)
@@ -10,7 +11,7 @@ class ProductFacade extends Facade {
 
     }
     async deleteById(id) {
-        const result = await this.Model.deleteOne({_id: id.toString()})
+        const result = await this.Model.deleteOne({ _id: id.toString() })
         return result
     }
     async create(data) {
@@ -42,7 +43,6 @@ class ProductFacade extends Facade {
     }
     async findSimilarProductsBySlug(slug, langId) {
         const product = await this.findBySlug(slug, langId)
-        console.log(slug, langId)
         if (!product) throw new AppError(404)
         const catId = product.primary_category
         let items = await this.findByPrimaryCategoryId(catId)
@@ -85,10 +85,22 @@ class ProductFacade extends Facade {
                     // attr: {name: "some", value: ["some", "other"]}
                     const pAttrIdx = product.attributes.findIndex(pAttr => pAttr.name.slug === attr.name)
                     if (pAttrIdx < 0) return false
-                    const checkAttrVal = attr.value.map(attrVal => {
-                        return product.attributes[pAttrIdx].value.findIndex(pAttrVal => pAttrVal.slug === attrVal) >= 0
-                    })
-                    if (checkAttrVal.includes(false)) return false
+
+                    if (product.attributes[pAttrIdx].name.attribute_type === 'decimal') {
+                        const from = parseInt(attr.value[0])
+                        const to = parseInt(attr.value[1])
+                        const attrValue = parseInt(product.attributes[pAttrIdx].value[0].slug)
+                        console.log(product.attributes[pAttrIdx].value[0])
+                        if (isNaN(from) || isNaN(to) || isNaN(attrValue)) return false
+                        if (attrValue > to) return false
+                        if (attrValue < from) return false
+                    } else {
+                        const checkAttrVal = attr.value.map(attrVal => {
+                            return product.attributes[pAttrIdx].value.findIndex(pAttrVal => pAttrVal.slug === attrVal) >= 0
+                        })
+                        if (checkAttrVal.includes(false)) return false
+                    }
+
                     return true
 
                 })
@@ -122,7 +134,7 @@ class ProductFacade extends Facade {
                 if (!b.promotion) {
                     return -1
                 }
-                return b.promotion.promotion_value - a.promotion.promotion_value
+                return b.promotion.value - a.promotion.value
             })
         }
         if (type === 'new') {
@@ -138,7 +150,6 @@ class ProductFacade extends Facade {
      */
     getFilters(products) {
         if (_.isEmpty(products)) return {}
-        console.log(products)
         let filters = {}
         products.forEach(product => {
             if (!filters.price) filters.price = new Set()
@@ -146,7 +157,6 @@ class ProductFacade extends Facade {
             if (!filters.labels) filters.labels = []
             if (!filters.attributes) filters.attributes = []
             filters.price.add(product.price)
-            console.log(product)
             filters.manufacturer.push({
                 _id: product.manufacturer._id,
                 name: product.manufacturer.name,
@@ -164,12 +174,7 @@ class ProductFacade extends Facade {
 
                 } else {
                     filters.attributes.push({
-                        name: {
-                            name: attr.name.name,
-                            slug: attr.name.slug,
-                            type: attr.name.type,
-                            _id: attr.name._id
-                        },
+                        name: new AttributeModification(attr.name).toINFO(),
                         value: attr.value.map(val => ({ _id: val._id, name: val.name, slug: val.slug }))
                     })
                 }
@@ -187,6 +192,10 @@ class ProductFacade extends Facade {
         filters.attributes = filters.attributes.map(attribute => {
             attribute.value = attribute.value.filter((attrValue, index) =>
                 attribute.value.findIndex(attr => attr._id.toString() === attrValue._id.toString()) === index)
+            if (attribute.name.attribute_type === 'decimal') {
+                const values = attribute.value.map(attrVal => parseInt(attrVal.slug))
+                attribute.value = [Math.min(...values), Math.max(...values)]
+            }
             return attribute
         })
         return filters

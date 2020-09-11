@@ -13,7 +13,10 @@ router.route('/id/:id')
   .get((...args) => controller.findById(...args))
   .delete(isAuthAdmin, (...args) => controller.removeById(...args))
 
+router.get('/admin/id/:id', isAuthAdmin, (...args) => controller.findById(...args))
+router.get('/admin/:slug', isAuthAdmin, (...args) => controller.findBySlug(...args))
+
 router.route('/:slug')
   .get((...args) => controller.findBySlug(...args))
-  
+
 module.exports = router

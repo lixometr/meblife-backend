@@ -7,10 +7,7 @@ class AttributeController extends Facade {
         super(...args)
         this.fieldsToTranslate = ['name', 'slug']
     }
-    async findById(id) {
-        const attribute = await this.Model.findById(id)
-        return attribute;
-    }
+
     async findValuesById(id) {
         const attribute = await this.findById(id)
         if(!attribute) return []

@@ -148,7 +148,7 @@ const ProductSchema = new Schema({
 ProductSchema.virtual('delivery_days').get(function () {
   if (!this.delivery_at) return
   const diff = this.delivery_at.getTime() - new Date().getTime()
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  const days = Math.round(diff / (1000 * 60 * 60 * 24))
   return days.toString()
 })
 ProductSchema.virtual('delivery_24').get(function () {
