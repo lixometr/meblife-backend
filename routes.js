@@ -20,6 +20,7 @@ const category = require('./model/category/router')
 const user = require('./model/user/router')
 const product = require('./model/product/router')
 const upload = require('./model/upload/router')
+const settings = require('./model/settings/router')
 
 router.route('/').get((req, res) => {
   res.json({
@@ -33,6 +34,8 @@ router.use('/admin-user', adminUser)
 router.use('/auth-admin', authAdmin)
 
 router.use('/auth', auth)
+
+router.use('/settings', settings)
 
 router.use('/attribute', attribute)
 

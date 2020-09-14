@@ -19,6 +19,7 @@ mongoose.connect(config.mongo.url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
+  useFindAndModify: false
 })
 app.use('/public', express.static('../uploads'));
 

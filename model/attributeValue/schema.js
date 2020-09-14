@@ -12,4 +12,5 @@ const attributeValueSchema = new Schema({
   }
 })
 
+// attributeValueSchema.pre('remove', function())
 module.exports = attributeValueSchema

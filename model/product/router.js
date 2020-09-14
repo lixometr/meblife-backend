@@ -18,6 +18,8 @@ router
 router
   .post('/', isAuthAdmin, (...args) => controller.create(...args))
 
+router.get('/search/:text', isAuthAdmin, (...args) => controller.search(...args))
+
 router.route('/id/:id')
   .get((...args) => controller.findById(...args))
   .put(isAuthAdmin, (...args) => controller.updateById(...args))
@@ -33,5 +35,6 @@ router.get('/:slug', (...args) => controller.findBySlug(...args))
 router.get('/:slug/similar-products', (...args) => controller.getSimilarProductsBySlug(...args))
 router.get('/:slug/similar-categories', (...args) => controller.getSimilarCategoriesBySlug(...args))
 
+router.get('/:slug/looks', (...args) => controller.findLooksBySlug(...args))
 
 module.exports = router

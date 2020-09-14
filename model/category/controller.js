@@ -5,7 +5,7 @@ const Modification = require('./modification')
 const categoryFacade = require('./facade')
 
 class CategoryController extends Controller {
-
+   
     async getParentList(req, res, next) {
         try {
             const category = await this.facade.findBySlug(req.params.slug, req.request.language.id)

@@ -10,7 +10,6 @@
   "engines": {
     "node": ">=6"
   },
-  "author": "Nicolas Del Valle <nicolas.delvalle@gmail.com>",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "bluebird": "^3.5.1",

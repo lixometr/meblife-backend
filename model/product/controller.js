@@ -30,6 +30,7 @@ class ProductController extends Controller {
     }
 
     async findById(req, res, next) {
+
         try {
             const product = await this.facade.findById(req.params.id, req.request.language.id)
             if (!product) throw new AppError(404)

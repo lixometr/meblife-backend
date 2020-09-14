@@ -139,6 +139,7 @@ module.exports = class ProductModification extends Modification {
     toINFO() {
         return {
             _id: this.item._id,
+            full_name: this.item.full_name,
             name: this.item.name,
             price: this.item.price,
             old_price: this.item.old_price,

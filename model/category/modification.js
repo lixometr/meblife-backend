@@ -15,6 +15,12 @@ module.exports = class CategoryModification extends Modification {
             slug: this.item.slug,
         }
     }
+    toFULL () {
+        return {
+            ...this.toINFO(),
+            bg_image: this.item.bg_image
+        }
+    }
     toADMIN() {
         return {
             _id: this.item._id,

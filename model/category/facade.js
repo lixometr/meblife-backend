@@ -6,6 +6,21 @@ class CategoryFacade extends Facade {
     constructor(...args) {
         super(...args)
         this.fieldsToTranslate = ['name', 'slug', 'product_mask']
+        this.relations = [
+            {
+                model: "Product",
+                async resolver({ id, model }) {
+                    await model.updateMany({ category: id }, { $pull: { category: id } }, { multi: true })
+                    await model.updateMany({ primary_category: id }, { primary_category: null }, { multi: true })
+                }
+            },
+            {
+                model: "Category",
+                async resolver({id, model}) {
+                    await model.updateMany({parent: id}, {parent: null}, {multi: true})
+                }
+            }
+        ]
     }
 
     async findParentsById(id) {
@@ -45,7 +60,7 @@ class CategoryFacade extends Facade {
         return childrenList
     }
     async findWithoutParent() {
-        const items = await this.Model.find({parent: null})
+        const items = await this.Model.find({ parent: null })
         return items;
     }
 
