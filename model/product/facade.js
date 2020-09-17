@@ -7,17 +7,10 @@ class ProductFacade extends Facade {
     constructor(...args) {
         super(...args)
         this.fieldsToTranslate = ['name', 'slug', 'description']
-        this.fieldsToPopulate = ['manufacturer', 'category', 'attributes.name', 'attributes.value', 'primary_category']
+        this.fieldsToPopulate = ['manufacturer', 'category', 'labels', 'attributes.name', 'attributes.value', 'primary_category']
 
     }
-    async deleteById(id) {
-        const result = await this.Model.deleteOne({ _id: id.toString() })
-        return result
-    }
-    async create(data) {
-        const result = await this.Model.create(data)
-        return result
-    }
+ 
     async populateFields(product) {
         this.fieldsToPopulate.forEach(async field => {
             await product.populate(field).execPopulate()
@@ -64,23 +57,29 @@ class ProductFacade extends Facade {
             }
             if (filters.manufacturer) {
                 const check = filters.manufacturer.map(manufacturer => product.manufacturer.slug === manufacturer)
-                if (check.includes(false)) return false
+                if (!check.includes(true)) return false
             }
             if (filters.labels) {
                 const check = filters.labels.map(label => product.labels.findIndex(pLabel => pLabel.slug === label) >= 0)
-                if (check.includes(false)) return false
+                if (!check.includes(true)) return false
             }
             if (filters.delivery) {
                 if (filters.delivery === '24h') {
                     if (!product.delivery_24) return false
                 } else {
                     const deliveryDays = parseInt(filters.delivery)
-                    if (!isNaN(deliveryDays)) {
-                        if (product.delivery_days > deliveryDays) return false
+                    if(!product.delivery_24) {
+                        if (!isNaN(deliveryDays)) {
+                            if(product.delivery_days !== 0 && !product.delivery_days) return false
+                            if (product.delivery_days > deliveryDays) return false
+                        } else {
+                            return false
+                        }
                     }
+                    
                 }
             }
-            if (filters.attributes) {
+            if (!_.isEmpty(filters.attributes)) {
                 const check = filters.attributes.map(attr => {
                     // attr: {name: "some", value: ["some", "other"]}
                     const pAttrIdx = product.attributes.findIndex(pAttr => pAttr.name.slug === attr.name)
@@ -98,13 +97,13 @@ class ProductFacade extends Facade {
                         const checkAttrVal = attr.value.map(attrVal => {
                             return product.attributes[pAttrIdx].value.findIndex(pAttrVal => pAttrVal.slug === attrVal) >= 0
                         })
-                        if (checkAttrVal.includes(false)) return false
+                        if (!checkAttrVal.includes(true)) return false
                     }
 
                     return true
 
                 })
-                if (check.includes(false)) return false
+                if (!check.includes(true)) return false
             }
 
             return true
@@ -148,7 +147,7 @@ class ProductFacade extends Facade {
      * 
      * @param {Array} products - 
      */
-    getFilters(products) {
+    getFilters(products, gotFilters) {
         if (_.isEmpty(products)) return {}
         let filters = {}
         products.forEach(product => {
@@ -164,6 +163,7 @@ class ProductFacade extends Facade {
             })
             const labels = product.labels
             labels.forEach(label => filters.labels.push({ name: label.name, slug: label.slug, _id: label._id }))
+            console.log(product)
             product.attributes.forEach(attr => {
                 const attrIdx = filters.attributes.findIndex(fAttr => fAttr.name._id.toString() === attr.name._id.toString())
                 if (attrIdx >= 0) {

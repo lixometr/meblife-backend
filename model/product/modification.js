@@ -5,6 +5,7 @@ const AttributeValueModification = require('../attributeValue/modification')
 const CategoryModification = require('../category/modification')
 const ManufacturerModification = require('../manufacturer/modification')
 const AttributeGroupModification = require('../attributeGroup/modification')
+const LabelModification = require('../productLabel/modification')
 module.exports = class ProductModification extends Modification {
     constructor(item, options) {
         super(item, options)
@@ -12,7 +13,7 @@ module.exports = class ProductModification extends Modification {
     }
 
     async makeTitle() {
-        const cat = new CategoryModification(this.item.primary_category, this.options).translate().toJSON() || {}
+        const cat = this.item.primary_category || {}
         const mask = cat.product_mask || ''
         const attrs = this.item.attributes
         const matches = mask.match(/\{\{.+?\}\}/gi)
@@ -24,22 +25,26 @@ module.exports = class ProductModification extends Modification {
         const allValues = {}
         // attribues
         attrs.forEach(attr => {
-            const instance = new AttributeModification(attr.name, this.options)
-            instance.translate()
+            
             const values = attr.value.reduce((str, val, idx) => {
-                const instance = new AttributeValueModification(val, this.options)
-                instance.translate()
-                str += instance.toJSON().name
+                str += val.name
                 if (idx < attr.value.length - 1) {
-                    str += ','
+                    str += ', '
                 }
                 return str
             }, '')
-            allValues[instance.toJSON().slug.toLowerCase()] = values
+            allValues[attr.name.slug.toLowerCase()] = values
         })
         allValues['name'] = this.item.name
         allValues['sku'] = this.item.sku
         allValues['manufacturer'] = this.item.manufacturer && this.item.manufacturer.name
+        allValues['label'] = this.item.labels.reduce((str, val, idx) => {
+            str += val.name
+            if (idx < this.item.labels.length - 1) {
+                str += ', '
+            }
+            return str
+        },'')
         if (matches) {
             matches.forEach(match => {
                 let slug = match.toLowerCase()
@@ -64,7 +69,6 @@ module.exports = class ProductModification extends Modification {
         const populateStr = facade.fieldsToPopulate.join(' ')
         await this.mongooseItem.populate(populateStr).execPopulate()
         this.item = this.mongooseItem.toJSON()
-
     }
     translateAll() {
         this.item.attributes = this.item.attributes.map(attr => {
@@ -77,12 +81,14 @@ module.exports = class ProductModification extends Modification {
         this.item.manufacturer = new ManufacturerModification(this.item.manufacturer, this.options).translate().toJSON()
         this.item.primary_category = new CategoryModification(this.item.primary_category, this.options).translate().toJSON()
         this.item.category = this.item.category.map(cat => new CategoryModification(cat, this.options).translate().toJSON())
+        this.item.labels = this.item.labels.map(label => new LabelModification(label, this.options).translate().toJSON())
     }
     async init() {
         await this.populateAll()
         this.translate()
-        await this.makeTitle()
         this.translateAll()
+
+        await this.makeTitle()
         this.calculatePrice()
 
     }
@@ -148,6 +154,7 @@ module.exports = class ProductModification extends Modification {
             is_available: this.item.is_available,
             slug: this.item.slug,
             promotion: this.item.promotion,
+            category: this.item.category || [],
             labels: this.item.labels,
             default_image: this.item.default_image,
             product_modifications: this.item.product_modifications,
@@ -156,6 +163,9 @@ module.exports = class ProductModification extends Modification {
             created_at: this.item.created_at,
             order_until: this.item.order_until,
             delivery_at: this.item.delivery_at,
+            delivery_days: this.item.delivery_days,
+            delivery_24: this.item.delivery_24,
+            attributes: this.item.attributes
         }
     }
 

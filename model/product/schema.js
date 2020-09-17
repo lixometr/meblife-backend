@@ -142,7 +142,16 @@ const ProductSchema = new Schema({
   updated_at: {
     type: Date,
     default: Date.now
-  }
+  },
+  product_number: String,
+  product_suplier_number: String,
+  ean: String,
+  mpn: String,
+  asin: String,
+  embed_3d: String,
+  embed_video: String,
+  price_buy: String,
+  price_rrp: String
 }, { toJSON: { virtuals: true } })
 
 ProductSchema.virtual('delivery_days').get(function () {

@@ -11,6 +11,8 @@ router.route('/id/:id')
   .get((...args) => controller.findById(...args))
   .delete(isAuthAdmin, (...args) => controller.removeById(...args))
 
+router.get('/admin/id/:id', isAuthAdmin, (...args) => controller.findById(...args))
+
 router.get('/product/:slug', (...args) => controller.findByProductSlug(...args))
 router.get('/category/:slug', (...args) => controller.findByCategorySlug(...args))
 

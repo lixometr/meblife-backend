@@ -26,7 +26,8 @@ module.exports = class LooksModification extends Modification {
         return {
             _id: this.item._id,
             image: this.item.image || {},
-            products: this.item.products  || []
+            products: this.item.products  || [],
+            created_at: this.item.created_at || ''
         }
     }
 
