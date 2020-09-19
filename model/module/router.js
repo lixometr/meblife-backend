@@ -1,14 +1,21 @@
 const controller = require('./controller')
+const isAuthAdmin = require('../../middleware/isAuthAdmin')
 const Router = require('express').Router
 const router = new Router()
 
 router.route('/')
-  .get((...args) => controller.find(...args))
-  .post((...args) => controller.create(...args))
+  .get((...args) => controller.findAll(...args))
+  .post(isAuthAdmin, (...args) => controller.create(...args))
 
-router.route('/:id')
-  .put((...args) => controller.update(...args))
+router.route('/id/:id')
   .get((...args) => controller.findById(...args))
-  .delete((...args) => controller.remove(...args))
+  .delete(isAuthAdmin, (...args) => controller.removeById(...args))
+  .put(isAuthAdmin, (...args) => controller.updateById(...args))
+
+
+
+router.get('/admin/id/:id', isAuthAdmin, (...args) => controller.findById(...args))
+
+
 
 module.exports = router

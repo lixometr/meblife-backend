@@ -9,7 +9,6 @@ module.exports = async function (req, res, next) {
             throw new AppError(401, 'Invalid Token')
         }
         const userData = jwt.verify(token, config.JWT_SECRET)
-        console.log(userData)
         const user = await adminUserFacade.findById(userData.id)
         if(!user) {
             throw new AppError(401, "Пользователь не найден")

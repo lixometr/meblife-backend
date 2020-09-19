@@ -135,6 +135,18 @@ const ProductSchema = new Schema({
     }
   ],
   product_files: [File],
+  module_groups_bottom: [
+    {
+      ref: "ModuleGroup",
+      type: Schema.Types.ObjectId
+    }
+  ],
+  module_groups_top: [
+    {
+      ref: "ModuleGroup",
+      type: Schema.Types.ObjectId
+    }
+  ],
   created_at: {
     type: Date,
     default: Date.now

@@ -96,8 +96,8 @@ module.exports = class ProductModification extends Modification {
         const currency = this.options.currency
         const defaultCurrency = this.options.defaultCurrency
         if(currency._id.toString() === defaultCurrency._id.toString()) return
-        const price = this.item.price * currency.k
-        const oldPrice = this.item.old_price * currency.k
+        let price = this.item.price * currency.k
+        let oldPrice = this.item.old_price * currency.k
         this.item.price = Math.round(price)
         this.item.old_price = Math.round(oldPrice)
     }

@@ -3,36 +3,45 @@ const Schema = mongoose.Schema
 const Image = require('../Image');
 const File = require('../File');
 const Translation = require('../Translation');
-const ModuleImage = {
+const ModuleImage = new Schema ({
   image: Image,
-  texts: {
-    title: [Translation],
-    description: [Translation],
-    more_btn: [Translation],
-    more_btn_url: [Translation]
-  }
-}
+  title: [Translation],
+  sub_title: [Translation],
+  description: [Translation],
+  more_btn: [Translation],
+  more_btn_url: [Translation]
+})
 const moduleSchema = new Schema({
-  module_number: Number,
+  module_id: Number,
   module_items: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "Product"
+      type: {
+        type: String
+      },
+      item: {
+        type: Schema.Types.ObjectId
+      }
     }
   ],
-  main_image: Image,
+  main_image: {
+    type: Image,
+    default: {}
+  },
   module_images: [ModuleImage],
   module_files: [File],
   sort_order: Number,
   cuntdown_start_at: Date,
   cuntdown_end_at: Date,
-  module_texts: {
-    title: [Translation],
-    sub_title: [Translation],
-    description: [Translation],
-    more_btn: [Translation],
-    more_btn_url: [Translation]
+  title: [Translation],
+  sub_title: [Translation],
+  description: [Translation],
+  more_btn: [Translation],
+  more_btn_url: [Translation],
+  show_type: String,
+  created_at: {
+    type: Date,
+    default: Date.now
   }
-})
+}, {minimize: false})
 
 module.exports = moduleSchema

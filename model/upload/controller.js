@@ -21,7 +21,6 @@ class UploadController extends Controller {
         try {
 
             upload.single('image')(req, res, (err) => {
-                console.log('hey', req.file,)
                 if (err instanceof multer.MulterError) {
                     throw new AppError(500, 'Loading File Error')
                 } else if (err) {
@@ -36,7 +35,6 @@ class UploadController extends Controller {
                     url: imagePath,
                 })
             })
-            console.log(req.file)
         } catch (err) {
             next(err)
         }

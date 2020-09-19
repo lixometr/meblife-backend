@@ -22,7 +22,42 @@ class ProductController extends Controller {
             next(err)
         }
     }
-
+    async search(req, res, next) {
+        try {
+            const searchPhrase = req.params.text
+            let items = []
+            if (!searchPhrase) {
+                items = await this.facade.findAll({ limit: 10 })
+            } else {
+                items = await this.facade.findAll()
+            }
+            const resolvers = items.map(async item => {
+                const instance = new this.Modification(item, {
+                    langId: req.request.language._id,
+                    defaultLangId: req.settings.language._id,
+                    currency: req.request.currency,
+                    defaultCurrency: req.settings.currency
+                })
+                await instance.init()
+                if (req.adminUser) {
+                    return instance.toADMIN()
+                } else {
+                    return instance.toINFO()
+                }
+            })
+            const modProducts = await Promise.all(resolvers)
+            if (!searchPhrase) {
+                res.json(modProducts)
+                return
+            }
+            const filteredProds = modProducts.filter(product => {
+                return product.full_name.indexOf(searchPhrase) > -1
+            })
+            res.json(filteredProds)
+        } catch (err) {
+            next(err)
+        }
+    }
     async findById(req, res, next) {
 
         try {

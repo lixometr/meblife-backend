@@ -39,7 +39,6 @@ class AuthadminController extends Controller {
             const isExist = await adminUserFacade.findByLogin(req.body.login)
             if(isExist) throw new AppError(409, 'Такой пользователь существует')
             const adminUser = await adminUserFacade.create(req.body)
-            console.log(adminUser)
             if(!adminUser) throw new AppError(500)
             res.json(adminUser)
         } catch (err) {

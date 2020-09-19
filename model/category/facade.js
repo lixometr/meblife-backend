@@ -19,6 +19,10 @@ class CategoryFacade extends Facade {
                 async resolver({id, model}) {
                     await model.updateMany({parent: id}, {parent: null}, {multi: true})
                 }
+            },
+            {
+                model: "Module",
+                field: 'module_items.$[].item',
             }
         ]
     }

@@ -8,9 +8,14 @@ class ProductFacade extends Facade {
         super(...args)
         this.fieldsToTranslate = ['name', 'slug', 'description']
         this.fieldsToPopulate = ['manufacturer', 'category', 'labels', 'attributes.name', 'attributes.value', 'primary_category']
-
+        this.relations = [
+            {
+                model: "Module",
+                field: 'module_items.$[].item',
+            }
+        ]
     }
- 
+
     async populateFields(product) {
         this.fieldsToPopulate.forEach(async field => {
             await product.populate(field).execPopulate()
@@ -68,15 +73,15 @@ class ProductFacade extends Facade {
                     if (!product.delivery_24) return false
                 } else {
                     const deliveryDays = parseInt(filters.delivery)
-                    if(!product.delivery_24) {
+                    if (!product.delivery_24) {
                         if (!isNaN(deliveryDays)) {
-                            if(product.delivery_days !== 0 && !product.delivery_days) return false
+                            if (product.delivery_days !== 0 && !product.delivery_days) return false
                             if (product.delivery_days > deliveryDays) return false
                         } else {
                             return false
                         }
                     }
-                    
+
                 }
             }
             if (!_.isEmpty(filters.attributes)) {
@@ -89,7 +94,6 @@ class ProductFacade extends Facade {
                         const from = parseInt(attr.value[0])
                         const to = parseInt(attr.value[1])
                         const attrValue = parseInt(product.attributes[pAttrIdx].value[0].slug)
-                        console.log(product.attributes[pAttrIdx].value[0])
                         if (isNaN(from) || isNaN(to) || isNaN(attrValue)) return false
                         if (attrValue > to) return false
                         if (attrValue < from) return false
@@ -163,7 +167,6 @@ class ProductFacade extends Facade {
             })
             const labels = product.labels
             labels.forEach(label => filters.labels.push({ name: label.name, slug: label.slug, _id: label._id }))
-            console.log(product)
             product.attributes.forEach(attr => {
                 const attrIdx = filters.attributes.findIndex(fAttr => fAttr.name._id.toString() === attr.name._id.toString())
                 if (attrIdx >= 0) {

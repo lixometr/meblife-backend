@@ -22,10 +22,19 @@ const categorySchema = new Schema({
     type: Boolean,
     default: true
   },
-  module_groups: {
+  // Выводить списком дочерние категории
+  show_categories: {
+    type: Boolean,
+    default: false
+  },
+  module_groups_top: [{
     type: Schema.Types.ObjectId,
     ref: "ModuleGroup"
-  },
+  }],
+  module_groups_bottom: [{
+    type: Schema.Types.ObjectId,
+    ref: "ModuleGroup"
+  }],
   parent: {
     type: Schema.Types.ObjectId,
     ref: "Category",

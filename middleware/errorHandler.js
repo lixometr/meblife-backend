@@ -9,7 +9,7 @@ module.exports = () => (err, req, res, next) => {
     }
     return
   }
-  if (err.name === 'JsonWebTokenError') {
+  if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
     res.status(401).json({status: 401, message: "Unauthorized"})
     return
   }

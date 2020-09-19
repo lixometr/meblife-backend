@@ -11,6 +11,10 @@ class ManufacturerFacade extends Facade {
                 async resolver({id, model}) {
                     await model.updateMany({manufactrer: id}, {manufactrer: null}, {multi: true})
                 }
+            },
+            {
+                model: "Module",
+                field: 'module_items.$[].item',
             }
         ]
     }
