@@ -3,7 +3,7 @@ const facade = require('./facade')
 module.exports = class CategoryModification extends Modification {
 
     translate() {
-        if(!this.item) return this
+        if (!this.item) return this
         this.item = facade.translate(this.item, this.langId, this.defaultLangId)
         return this
     }
@@ -15,13 +15,14 @@ module.exports = class CategoryModification extends Modification {
             slug: this.item.slug,
         }
     }
-    toFULL () {
+    toFULL() {
         return {
             ...this.toINFO(),
             bg_image: this.item.bg_image,
             module_groups_top: this.item.module_groups_top,
             module_groups_bottom: this.item.module_groups_bottom,
-            show_products: this.item.show_products  
+            show_products: this.item.show_products,
+            show_category_grid: this.item.show_category_grid
         }
     }
     toADMIN() {
@@ -33,6 +34,8 @@ module.exports = class CategoryModification extends Modification {
             bg_image: this.item.bg_image || {},
             product_mask: this.item.product_mask,
             show_products: this.item.show_products,
+            show_category_grid: this.item.show_category_grid,
+
             parent: this.item.parent,
             module_groups_top: this.item.module_groups_top,
             module_groups_bottom: this.item.module_groups_bottom,

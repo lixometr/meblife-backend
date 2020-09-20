@@ -12,6 +12,9 @@ class ProductFacade extends Facade {
             {
                 model: "Module",
                 field: 'module_items.$[].item',
+                async resolver({ model, id }) {
+                   const result = await model.updateMany({}, { $pull: { 'module_items': { item: id } } }, { multi: true })
+                }
             }
         ]
     }

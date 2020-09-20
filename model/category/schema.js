@@ -23,7 +23,7 @@ const categorySchema = new Schema({
     default: true
   },
   // Выводить списком дочерние категории
-  show_categories: {
+  show_category_grid: {
     type: Boolean,
     default: false
   },
@@ -45,7 +45,7 @@ const categorySchema = new Schema({
     type: Date,
     default: Date.now
   }
-})
+}, {minimize: false})
 
 
 module.exports = categorySchema

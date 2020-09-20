@@ -16,13 +16,16 @@ class CategoryFacade extends Facade {
             },
             {
                 model: "Category",
-                async resolver({id, model}) {
-                    await model.updateMany({parent: id}, {parent: null}, {multi: true})
+                async resolver({ id, model }) {
+                    await model.updateMany({ parent: id }, { parent: null }, { multi: true })
                 }
             },
             {
                 model: "Module",
                 field: 'module_items.$[].item',
+                async resolver({ model, id }) {
+                    const result = await model.updateMany({}, { $pull: { 'module_items': { item: id } } }, { multi: true })
+                }
             }
         ]
     }
