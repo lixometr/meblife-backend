@@ -16,6 +16,7 @@ router.get('/admin/id/:id', isAuthAdmin, (...args) => controller.findById(...arg
 
 router.get('/product/:slug', (...args) => controller.findByProductSlug(...args))
 router.get('/category/:slug', (...args) => controller.findByCategorySlug(...args))
+router.get('/manufacturer/:slug', (...args) => controller.findByManufacturerSlug(...args))
 
 router.get('/:slug', (...args) => controller.findBySlug(...args))
 router.get('/:slug/filters', (...args) => productController.getProductFiltersByInspirationSlug(...args))

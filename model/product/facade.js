@@ -42,6 +42,12 @@ class ProductFacade extends Facade {
 
         return inPrimaryCategory
     }
+    async findByManufacturerId(id) {
+        const products = await this.Model.find({
+            manufacturer: id
+        })
+        return products
+    }
     async findSimilarProductsBySlug(slug, langId) {
         const product = await this.findBySlug(slug, langId)
         if (!product) throw new AppError(404)

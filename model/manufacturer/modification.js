@@ -15,7 +15,15 @@ module.exports = class ManufacturerModification extends Modification {
             _id: this.item._id,
             name: this.item.name,
             slug: this.item.slug,
-            image: this.item.image,
+            image: this.item.image || {},
+        }
+    }
+    toFULL() {
+        return {
+            ...this.toINFO(),
+            history: this.item.history,
+            header_image: this.item.header_image || {},
+            module_groups: this.item.module_groups || []
         }
     }
 

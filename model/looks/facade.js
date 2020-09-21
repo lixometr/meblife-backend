@@ -12,6 +12,12 @@ class LooksFacade extends Facade {
         const items = await this.Model.find({products: {$in: productsIds}})
         return items
     }
+    async findByManufacturerId(id) {
+        const products = await productFacade.findByManufacturerId(id)
+        const productsIds = products.map(product => product._id)
+        const items = await this.Model.find({products: {$in: productsIds}})
+        return items
+    }
 }
 
 module.exports = new LooksFacade('Looks', looksSchema)

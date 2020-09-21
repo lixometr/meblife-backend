@@ -1,6 +1,6 @@
 const Facade = require('../../lib/facade')
 const categorySchema = require('./schema')
-// const productFacade = require('../product/facade')
+const productFacade = require('../product/facade')
 const mongoose = require('mongoose')
 class CategoryFacade extends Facade {
     constructor(...args) {
@@ -70,7 +70,24 @@ class CategoryFacade extends Facade {
         const items = await this.Model.find({ parent: null })
         return items;
     }
-
+    async findByManufacturerId(id) {
+        const products = await productFacade.findByManufacturerId(id)
+        const categoryIds = products.reduce((arr, product) => {
+            const pCategory = product.primary_category
+            const categories = product.category
+            if(pCategory) {
+                arr.push(pCategory)
+            }
+            if(categories && categories.length) {
+                arr = arr.concat(categories)
+            }
+            return arr
+        }, [])
+        const categories = await this.Model.find({
+            _id: {$in: categoryIds}
+        })
+        return categories
+    }
 }
 
 module.exports = new CategoryFacade('Category', categorySchema)

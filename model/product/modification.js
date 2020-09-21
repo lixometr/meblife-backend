@@ -57,7 +57,8 @@ module.exports = class ProductModification extends Modification {
 
             })
         }
-
+        // Убираем незамененые маски
+        newName = newName.replace(/\{\{.+?\}\}/g, '')
         this.item.full_name = newName
 
     }

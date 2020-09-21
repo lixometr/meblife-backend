@@ -10,12 +10,26 @@ const manufacturerSchema = new Schema({
         default: () => ({})
     },
     description: [Translation],
-    headerImage: Image,
+    header_image: {
+        type: Image,
+        default: () => ({})
+    },
+    module_groups: [
+        {
+            ref: "ModuleGroup",
+            type: Schema.Types.ObjectId
+        }
+    ],
+    videos: [
+        {
+            embed_id: String
+        }
+    ],
     history: [Translation],
     created_at: {
         type: Date,
         default: Date.now
     }
-})
+}, {minimize: false})
 
 module.exports = manufacturerSchema

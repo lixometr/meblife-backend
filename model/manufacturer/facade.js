@@ -4,7 +4,7 @@ const manufacturerSchema = require('./schema')
 class ManufacturerFacade extends Facade {
     constructor(...atrs) {
         super(...atrs)
-        this.fieldsToTranslate = ['name', 'slug']
+        this.fieldsToTranslate = ['name', 'slug', 'history']
         this.relations = [
             {
                 model: "Product",

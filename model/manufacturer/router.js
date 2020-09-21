@@ -1,5 +1,7 @@
 const controller = require('./controller')
 const isAuthAdmin = require('../../middleware/isAuthAdmin')
+const categoryController = require('../category/controller')
+const productController = require('../product/controller')
 const Router = require('express').Router
 const router = new Router()
 
@@ -20,5 +22,7 @@ router.get('/admin/id/:id', isAuthAdmin, (...args) => controller.findById(...arg
 router.get('/admin/:slug', isAuthAdmin, (...args) => controller.findBySlug(...args))
 
 router.get('/:slug', (...args) => controller.findBySlug(...args))
+router.get('/:slug/categories', (...args) => categoryController.findByManufacturerSlug(...args))
+router.get('/:slug/products', (...args) => productController.findByManufacturerSlug(...args))
 
 module.exports = router

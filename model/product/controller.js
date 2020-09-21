@@ -7,7 +7,7 @@ const Modification = require('./modification');
 const config = require('../../config');
 const CategoryModification = require('../category/modification');
 const _ = require('lodash');
-// const 
+const manufacturerFacade = require('../manufacturer/facade');
 class ProductController extends Controller {
     constructor(...args) {
         super(...args)
@@ -167,6 +167,17 @@ class ProductController extends Controller {
             const category = await categoryFacade.findBySlug(req.params.slug, req.request.language.id)
             if (!category) throw new AppError(400)
             const products = await this.facade.findByCategoryId(category._id)
+            this.modifyProducts(req, res, next, products)
+        }
+        catch (err) {
+            next(err)
+        }
+    }
+    async findByManufacturerSlug(req, res, next) {
+        try {
+            const manufacturer = await manufacturerFacade.findBySlug(req.params.slug, req.request.language.id)
+            if (!manufacturer) throw new AppError(400)
+            const products = await this.facade.findByManufacturerId(manufacturer._id)
             this.modifyProducts(req, res, next, products)
         }
         catch (err) {

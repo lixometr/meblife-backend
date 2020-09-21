@@ -3,9 +3,10 @@ const _ = require('lodash')
 const AppError = require('../../helpers/error')
 const Modification = require('./modification')
 const categoryFacade = require('./facade')
+const manufacturerFacade = require('../manufacturer/facade')
 
 class CategoryController extends Controller {
-   
+
     async getParentList(req, res, next) {
         try {
             const category = await this.facade.findBySlug(req.params.slug, req.request.language.id)
@@ -84,7 +85,28 @@ class CategoryController extends Controller {
         }
     }
 
-
+    async findByManufacturerSlug(req, res, next) {
+        try {
+            const manufacturer = await manufacturerFacade.findBySlug(req.params.slug, req.request.language.id)
+            if (!manufacturer) throw new AppError(400)
+            const categories = await this.facade.findByManufacturerId(manufacturer._id)
+            const resolvers = categories.map(async category => {
+                const instance = new Modification(category, {
+                    langId: req.request.language._id,
+                    defaultLangId: req.settings.language._id,
+                    currency: req.request.currency,
+                    defaultCurrency: req.settings.currency
+                })
+                await instance.init()
+                return instance.toINFO()
+            })
+            const items = await Promise.all(resolvers)
+            res.json(items)
+        }
+        catch (err) {
+            next(err)
+        }
+    }
 
 }
 

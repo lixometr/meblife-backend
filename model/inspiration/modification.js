@@ -1,7 +1,7 @@
 const Modification = require('../../lib/modification')
 const facade = require('./facade')
 const productModification = require('../product/modification')
-const { times } = require('lodash')
+const manufacturerModification = require('../manufacturer/modification')
 module.exports = class InspirationModification extends Modification {
 
     translate() {
@@ -34,10 +34,16 @@ module.exports = class InspirationModification extends Modification {
         const products3 = await Promise.all(resolvers3)
         this.item.products3 = products3
     }
+    async initManufacturer() {
+        const instance = new manufacturerModification(this.item.manufacturer, this.options)
+        await instance.init()
+        this.item.manufacturer = instance.toINFO()
+    }
     async init() {
         await this.populateAll()
         this.translate()
         await this.initProducts()
+        await this.initManufacturer()
     }
     toFULL() {
         return {
