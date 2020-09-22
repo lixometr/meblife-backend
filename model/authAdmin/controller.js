@@ -19,7 +19,7 @@ class AuthadminController extends Controller {
             const isValid = await adminUserFacade.check(login, password)
             if (!isValid) throw new AppError(null, 'Неверный логин или пароль')
             const user = await adminUserFacade.findByLogin(login)
-            const token = jwt.sign({ id: user._id, exp: (Date.now() / 1000) + config.JWT_EXPIRES }, config.JWT_SECRET)
+            const token = jwt.sign({ id: user._id, exp: (Date.now() / 1000) + config.JWT_ADMIN_EXPIRES }, config.JWT_ADMIN_SECRET)
             const userToSend = new AdminUserModification(user).toINFO()
             res.json({
                 token,

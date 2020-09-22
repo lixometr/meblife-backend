@@ -22,6 +22,7 @@ module.exports = class ManufacturerModification extends Modification {
         return {
             ...this.toINFO(),
             history: this.item.history,
+            videos: this.item.videos,
             header_image: this.item.header_image || {},
             module_groups: this.item.module_groups || []
         }

@@ -20,11 +20,7 @@ const manufacturerSchema = new Schema({
             type: Schema.Types.ObjectId
         }
     ],
-    videos: [
-        {
-            embed_id: String
-        }
-    ],
+    videos: [Translation],
     history: [Translation],
     created_at: {
         type: Date,

@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const config = require('../config')
 const getLangText = (langId, defaultLangId) => arr => {
     let item = getLangItem(langId, defaultLangId)(arr)
     if(!item || !item.value) item = {value: ''}
@@ -29,8 +30,13 @@ function translateFields(obj, fieldsToTranslate, langId, defaultLangId ) {
     return newObj
 }
 
+function generateConfirmLink (key) {
+    return `${config.appUrl}/confirm/${key}`
+}
+
 module.exports = {
     getLangText,
     getLangItem,
-    translateFields
+    translateFields,
+    generateConfirmLink
 }

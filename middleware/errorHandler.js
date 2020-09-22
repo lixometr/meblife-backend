@@ -1,16 +1,21 @@
+const config = require('../config')
 const AppError = require('../helpers/error')
 module.exports = () => (err, req, res, next) => {
   console.log(err)
   if (err instanceof AppError) {
-    if (err.message) {
-      res.json({ error: err.message, status: err.statusCode })
+    if (err.message || err.statusCode || err.errorCode) {
+      if(err.statusCode === 401) {
+        res.status(401).json({status: 401, errorCode: config.errorCodes.noAuth})
+        return
+      }
+      res.json({ error: err.message || true, status: err.statusCode, errorCode: err.errorCode })
     } else {
       res.sendStatus(err.statusCode)
     }
     return
   }
   if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
-    res.status(401).json({status: 401, message: "Unauthorized"})
+    res.status(401).json({status: 401, errorCode: config.errorCodes.noAuth})
     return
   }
   res.status(500).json({ error: err.message, status: 500 })

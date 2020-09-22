@@ -1,6 +1,6 @@
-const Facade = require('../../lib/facade')
-const authSchema = require('./schema')
 
-class AuthFacade extends Facade {}
+class AuthFacade  {
+  
+}
 
-module.exports = new AuthFacade('Auth', authSchema)
+module.exports = new AuthFacade()
