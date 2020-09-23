@@ -94,14 +94,8 @@ class ProductController extends Controller {
     }
     async modifyProducts(req, res, next, products) {
         try {
-            // Страницы
-            let page = parseInt(req.query.page)
-            if (isNaN(page)) {
-                page = 0
-            } else {
-                page -= 1
-            }
-            const perProductPage = config.productsPerPage;
+
+            const perProductPage = config.perPage;
 
             let filters = req.query.filters
             // 'cheap' | 'expansive' | 'popular' | 'sale' | 'new'
@@ -137,19 +131,7 @@ class ProductController extends Controller {
                 cutProducts = this.facade.filterProducts(cutProducts, filters)
             }
             cutProducts = this.facade.sortProducts(cutProducts, sortBy)
-
-
-            let totalPages = cutProducts.length / perProductPage
-            if (totalPages < 1) totalPages = 1
-            totalPages = Math.floor(totalPages)
-
-            const toSend = {
-                info: {
-                    totalProducts: cutProducts.length,
-                    totalPages,
-                },
-                products: cutProducts.slice(page, perProductPage)
-            }
+            let toSend = await this.facade.paginate({ items: cutProducts, perPage: req.query.perPage, nowPage: req.query.page })
             if (sendFilters) {
                 toSend.filters = this.facade.getFilters(modProducts)
             }

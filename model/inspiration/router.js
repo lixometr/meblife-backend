@@ -12,6 +12,10 @@ router.route('/id/:id')
   .get((...args) => controller.findById(...args))
   .delete(isAuthAdmin, (...args) => controller.removeById(...args))
 
+router.get('/search/:text', isAuthAdmin, (...args) => controller.search(...args))
+router.get('/search/', isAuthAdmin, (...args) => controller.search(...args))
+
+
 router.get('/admin/id/:id', isAuthAdmin, (...args) => controller.findById(...args))
 
 router.get('/product/:slug', (...args) => controller.findByProductSlug(...args))

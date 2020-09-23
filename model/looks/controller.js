@@ -11,16 +11,18 @@ class LooksController extends Controller {
             const product = await productFacade.findBySlug(req.params.slug, req.request.language._id)
             const items = await this.facade.findByProductId(product._id.toString())
             const resolvers = items.map(async item => {
-                const instance = new Modification(item, { 
-                    langId: req.request.language._id, 
+                const instance = new Modification(item, {
+                    langId: req.request.language._id,
                     defaultLangId: req.settings.language._id,
                     currency: req.settings.currency,
                     defaultCurrency: req.settings.currency,
-                 })
+                })
                 await instance.init()
                 return instance.toINFO()
             })
-            const toSend = await Promise.all(resolvers)
+            const allItems = await Promise.all(resolvers)
+            const toSend = await this.facade.paginate({ items: allItems, nowPage: req.query.page, perPage: req.query.perPage })
+
             res.json(toSend)
         } catch (err) {
             next(err)
@@ -31,16 +33,17 @@ class LooksController extends Controller {
             const category = await categoryFacade.findBySlug(req.params.slug, req.request.language._id)
             const items = await this.facade.findByCategoryId(category._id.toString())
             const resolvers = items.map(async item => {
-                const instance = new Modification(item, { 
-                    langId: req.request.language._id, 
+                const instance = new Modification(item, {
+                    langId: req.request.language._id,
                     defaultLangId: req.settings.language._id,
                     currency: req.settings.currency,
                     defaultCurrency: req.settings.currency,
-                 })
+                })
                 await instance.init()
                 return instance.toINFO()
             })
-            const toSend = await Promise.all(resolvers)
+            const allItems = await Promise.all(resolvers)
+            const toSend = await this.facade.paginate({ items: allItems, nowPage: req.query.page, perPage: req.query.perPage })
             res.json(toSend)
         } catch (err) {
             next(err)
@@ -51,22 +54,23 @@ class LooksController extends Controller {
             const manufacturer = await manufacturerFacade.findBySlug(req.params.slug, req.request.language._id)
             const items = await this.facade.findByManufacturerId(manufacturer._id.toString())
             const resolvers = items.map(async item => {
-                const instance = new Modification(item, { 
-                    langId: req.request.language._id, 
+                const instance = new Modification(item, {
+                    langId: req.request.language._id,
                     defaultLangId: req.settings.language._id,
                     currency: req.settings.currency,
                     defaultCurrency: req.settings.currency,
-                 })
+                })
                 await instance.init()
                 return instance.toINFO()
             })
-            const toSend = await Promise.all(resolvers)
+            const allItems = await Promise.all(resolvers)
+            const toSend = await this.facade.paginate({ items: allItems, nowPage: req.query.page, perPage: req.query.perPage })
             res.json(toSend)
         } catch (err) {
             next(err)
         }
     }
-    
+
 
 }
 
