@@ -27,6 +27,8 @@ const moduleSchema = new Schema({
     type: Image,
     default: {}
   },
+  color: String,
+  bg_color: String,
   module_images: [ModuleImage],
   module_files: [File],
   sort_order: Number,

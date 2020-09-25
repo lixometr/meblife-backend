@@ -13,13 +13,13 @@ class AuthController extends Controller {
         try {
             const errors = validationResult(req)
             if (!errors.isEmpty()) {
-                throw new AppError(400, 'Некорректные данные', 'invalidData')
+                throw new AppError(200, 'Некорректные данные', 'invalidData')
             }
             const email = req.body.email
             const password = req.body.password
             const remember = req.body.remember
             const isValid = await userFacade.check(email, password)
-            if (!isValid) throw new AppError(400, null, 'userInvalidData')
+            if (!isValid) throw new AppError(200, null, 'userInvalidData')
             const user = await userFacade.findByEmail(email)
             if(!user.is_confirmed) throw new AppError(404, null, 'userInvalidData')
             const expires = remember ? config.JWT_EXPIRES_LONG : config.JWT_EXPIRES
@@ -40,7 +40,7 @@ class AuthController extends Controller {
         try {
             const errors = validationResult(req)
             if (!errors.isEmpty()) {
-                throw new AppError(400, null, 'userInvalidData')
+                throw new AppError(200, null, 'userInvalidData')
             }
             const email = req.body.email
             const password = req.body.password
@@ -78,11 +78,11 @@ class AuthController extends Controller {
         try {
             const errors = validationResult(req)
             if (!errors.isEmpty()) {
-                throw new AppError(400, null, 'userInvalidData')
+                throw new AppError(200, null, 'userInvalidData')
             }
             const email = req.body.email
             const isExist = await userFacade.findByEmail(email)
-            if (!isExist) throw new AppError(400, null, 'userNotFound')
+            if (!isExist) throw new AppError(200, null, 'userNotFound')
             // send email
             sendMail({
                 template: 'restore',

@@ -12,6 +12,10 @@ module.exports = () => (err, req, res, next) => {
         res.status(err.statusCode).json({status: err.statusCode})
         return
       }
+      if(err.statusCode === 404) {
+        res.status(err.statusCode).json({status: err.statusCode})
+        return
+      }
       res.json({ error: err.message || true, status: err.statusCode, errorCode: err.errorCode })
     } else {
       res.sendStatus(err.statusCode)

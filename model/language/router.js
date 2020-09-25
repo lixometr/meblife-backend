@@ -12,4 +12,7 @@ router.route('/id/:id')
   .get((...args) => controller.findById(...args))
   .delete(isAuthAdmin, (...args) => controller.removeById(...args))
 
+router.get('/:slug', (...args) => controller.findBySlug(...args))
+router.put('/:slug', isAuthAdmin, (...args) => controller.updateBySlug(...args))
+
 module.exports = router

@@ -166,6 +166,12 @@ class ProductController extends Controller {
             next(err)
         }
     }
+    async findByInspirationSlug(req, res, next) {
+        const inspiration = await inspirationFacade.findBySlug(req.params.slug, req.request.language.id)
+        if (!inspiration) throw new AppError(400)
+        const products = inspiration.products1
+        this.modifyProducts(req, res, next, products)
+    }
     async getSimilarProductsBySlug(req, res, next) {
         try {
             const products = await this.facade.findSimilarProductsBySlug(req.params.slug, req.request.language.id)

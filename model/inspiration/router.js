@@ -24,5 +24,7 @@ router.get('/manufacturer/:slug', (...args) => controller.findByManufacturerSlug
 
 router.get('/:slug', (...args) => controller.findBySlug(...args))
 router.get('/:slug/filters', (...args) => productController.getProductFiltersByInspirationSlug(...args))
+router.get('/:slug/products', (...args) => productController.findByInspirationSlug(...args))
+router.get('/:slug/similar', (...args) => controller.findBySlugSimilar(...args))
 
 module.exports = router

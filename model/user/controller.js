@@ -25,38 +25,41 @@ class UserController extends Controller {
     /*
         {
             newPassword: '',
-            oldPassword: '',
+            password: '',
             newPasswordRepeat: ''
         }
     */
     async changePassword(req, res, next) {
         try {
-            const {newPassword, oldPassword, newPasswordRepeat} = req.body
-            if(newPassword !== newPasswordRepeat) throw new AppError(400, 'Пароли не совпадают')
-            if(newPassword === oldPassword) throw new AppError(400, 'Пароли одинаковы')
-            const result = await this.facade.changePassword(req.user._id, {newPassword})
-            res.json({ok: true, ...result})
+
+            const { newPassword, password, newPasswordRepeat } = req.body
+            if (newPassword !== newPasswordRepeat) throw new AppError(200, '', 'passwordsNotEquals')
+            if (newPassword === password) throw new AppError(200, '', 'passwordsAreSimilar')
+            const check = await this.facade.check(req.user.email, password)
+            if (!check) throw new AppError(200, '', 'passwordIncorrect')
+            const result = await this.facade.changePassword(req.user._id, { newPassword })
+            res.json({ ok: true, })
         } catch (err) {
             next(err)
         }
     }
-     /*
-        {
-            newEmail: '',
-            password: '',
-        }
-    */
+    /*
+       {
+           email: '',
+           password: '',
+       }
+   */
     async changeEmail(req, res, next) {
         try {
-            const {newEmail, password} = req.body
+            const { email, password } = req.body
             // Совпадает ли пароль
             const check = await this.facade.check(req.user.email, password)
-            if(!check) throw new AppError(400, 'Пароль не верный')
+            if (!check) throw new AppError(200, '', 'passwordIncorrect')
             // Есть ли юзер с таким email
-            const hasEmail = await this.facade.findByEmail(newEmail)
-            if(hasEmail) throw new AppError(400, 'Пользователь с таким email существует')
-            const result = await this.facade.changeEmail(req.user._id, {newEmail})
-            res.json({ok: true, ...result})
+            const hasEmail = await this.facade.findByEmail(email)
+            if (hasEmail) throw new AppError(200, '', 'userExist')
+            const result = await this.facade.changeEmail(req.user._id, { email })
+            res.json({ ok: true })
         } catch (err) {
             next(err)
         }
@@ -73,7 +76,7 @@ class UserController extends Controller {
             })
             await instance.initFavourite()
             const favourite = instance.toJSON().favourite || []
-            res.json({ok: true, favourite})
+            res.json({ ok: true, favourite })
         } catch (err) {
             next(err)
         }

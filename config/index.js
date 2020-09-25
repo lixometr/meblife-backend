@@ -16,6 +16,7 @@ const config = {
   JWT_EXPIRES_LONG: 2 * 60 * 60 * 24,
   JWT_ADMIN_EXPIRES: 1 * 60 * 60 * 24,
   IMAGE_FOLDER: path.join(__dirname, '..', '..', 'uploads'),
+  langDir: path.join(__dirname, '..', 'lang'),
   errorCodes
 }
 config.IMAGE_PATH = `${config.baseName}/public/`

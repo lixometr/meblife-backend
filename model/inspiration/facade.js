@@ -39,20 +39,20 @@ class InspirationFacade extends Facade {
         return items
     }
     async findByManufacturerId(id) {
-        const products = await productFacade.findByManufacturerId(id)
-        const productsIds = products.map(product => product._id)
+        // const products = await productFacade.findByManufacturerId(id)
+        // const productsIds = products.map(product => product._id)
         // Или переделать под
-        // this.Model.find({
-        //     manufacturer: id
-        // })
-
         const items = await this.Model.find({
-            $or: [
-                { products1: { $in: productsIds } },
-                { products2: { $in: productsIds } },
-                { products3: { $in: productsIds } }
-            ]
+            manufacturer: id
         })
+
+        // const items = await this.Model.find({
+        //     $or: [
+        //         { products1: { $in: productsIds } },
+        //         { products2: { $in: productsIds } },
+        //         { products3: { $in: productsIds } }
+        //     ]
+        // })
         return items
     }
 }

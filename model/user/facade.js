@@ -38,15 +38,15 @@ class UserFacade extends Facade {
         const result = await user.save()
         return result
     }
-    async changeEmail(id, newEmail) {
+    async changeEmail(id, {email}) {
         const user = await this.findById(id)
-        user.email = newEmail
+        user.email = email
         return await user.save()
     }
-    async changePassword(id, newPassword) {
+    async changePassword(id, {newPassword}) {
         const user = await this.findById(id)
         const salt = await bcrypt.genSalt(8);
-        password = await bcrypt.hash(newPassword, salt);
+        const password = await bcrypt.hash(newPassword, salt);
         user.password = password
         return await user.save()
     }
