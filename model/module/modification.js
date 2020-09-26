@@ -25,19 +25,16 @@ module.exports = class ModuleModification extends Modification {
                 type: moduleItem.type,
                 item
             }
-            // console.log(ret)
             return ret
         })
 
         items = await Promise.all(resolvers)
 
         this.item.module_items = items
-        console.log(this.item.module_items)
     }
     async initItems() {
         let items = this.item.module_items
         if (!_.isArray(items) || _.isEmpty(items)) return
-        console.log(items)
         const resolvers = items.map(async item => {
             let initItem = {}
             if (item.type === 'Product') {

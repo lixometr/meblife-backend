@@ -22,6 +22,7 @@ const product = require('./model/product/router')
 const upload = require('./model/upload/router')
 const settings = require('./model/settings/router')
 const page = require('./model/page/router')
+const widget = require('./model/widget/router')
 
 router.route('/').get((req, res) => {
   res.json({
@@ -29,6 +30,7 @@ router.route('/').get((req, res) => {
   })
 })
 router.use('/upload', upload)
+router.use('/widget', widget)
 
 router.use('/admin-user', adminUser)
 

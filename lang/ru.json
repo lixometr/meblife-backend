@@ -29,7 +29,8 @@
         "required": "Поле обязательно для заполнения",
         "email": "Введите корректный email",
         "passwordNotEquals": "Пароли не совпадают",
-        "passwordMinLength": "Длинна пароля должна быть не менее {{length}}"
+        "passwordMinLength": "Длинна пароля должна быть не менее {{length}}",
+        "correct": "Введите корректные данные"
     },
     "email": "Email",
     "password": "Пароль",
@@ -158,6 +159,45 @@
                 "btnText": "Показать все вдохновения"
             }
         ]
+    },
+    "panelChangePersonalData": {
+        "panelTitle": "ИЗМЕНИТЕ СВОИ ЛИЧНЫЕ ДАННЫЕ"
+    },
+    "panelAdresses": {
+        "panelTitle": "УПРАВЛЕНИЕ АДРЕСАМИ",
+        "links": {
+            "billing": "Биллинг",
+            "delivery": "Адрес доставки"
+        }
+    },
+    "panelAddressesInvoice": {
+        "panelTitle": "БИЛЛИНГ",
+        "btns": {
+            "back": "Назад",
+            "add": "Добавить новый адрес"
+        }
+    },
+    "panelChangeAddressesInvoice": {
+        "panelTitle": "РЕДАКТИРОВАТЬ ДЕТАЛИ СЧЕТА",
+        "btns": {
+            "delete": "Удалить адрес",
+            "save": "Добавить новый адрес"
+        }
+    },
+    "changeAddressesInvoice": {
+        "inputCompany": "Название компании",
+        "inputNip": "ИНН",
+        "inputPhone": "Телефонный номер",
+        "inputAddress": "Улица",
+        "inputPostalCode": "Почтовый индекс",
+        "inputCity": "Город",
+        "inputDefault": "По умолчанию"
+    },
+    "changePersonalData": {
+        "inputName": "Ваше имя и фамилия",
+        "inputPhone": "Ваш телефон",
+        "btn": "Подтвердить",
+        "success": "Данные успешно изменены!"
     },
     "panelAccount": {
         "panelTitle": "ВАШ АККАУНТ",

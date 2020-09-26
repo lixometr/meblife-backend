@@ -15,7 +15,6 @@ class ProductController extends Controller {
     }
     async findAll(req, res, next) {
         try {
-            const page = req.query.page
             const products = await this.facade.findAll()
             this.modifyProducts(req, res, next, products)
         } catch (err) {
@@ -27,7 +26,8 @@ class ProductController extends Controller {
             const searchPhrase = req.params.text
             let items = []
             if (!searchPhrase) {
-                items = await this.facade.findAll({ limit: 10 })
+                await this.findAll(req, res, next)
+                return
             } else {
                 items = await this.facade.findAll()
             }
@@ -53,7 +53,9 @@ class ProductController extends Controller {
             const filteredProds = modProducts.filter(product => {
                 return product.full_name.indexOf(searchPhrase) > -1
             })
-            res.json(filteredProds)
+            let toSend = await this.facade.paginate({ items: filteredProds, perPage: req.query.per_page, nowPage: req.query.page })
+
+            res.json(toSend)
         } catch (err) {
             next(err)
         }
@@ -95,7 +97,6 @@ class ProductController extends Controller {
     async modifyProducts(req, res, next, products) {
         try {
 
-            const perProductPage = config.perPage;
 
             let filters = req.query.filters
             // 'cheap' | 'expansive' | 'popular' | 'sale' | 'new'
@@ -131,7 +132,7 @@ class ProductController extends Controller {
                 cutProducts = this.facade.filterProducts(cutProducts, filters)
             }
             cutProducts = this.facade.sortProducts(cutProducts, sortBy)
-            let toSend = await this.facade.paginate({ items: cutProducts, perPage: req.query.perPage, nowPage: req.query.page })
+            let toSend = await this.facade.paginate({ items: cutProducts, perPage: req.query.per_page, nowPage: req.query.page })
             if (sendFilters) {
                 toSend.filters = this.facade.getFilters(modProducts)
             }

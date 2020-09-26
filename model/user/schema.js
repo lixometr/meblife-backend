@@ -15,6 +15,7 @@ const Invoice = new Schema({
   phone: String,
   postal_code: String,
   city: String,
+  address: String,
   is_default: Boolean,
   note: String
 })
@@ -37,15 +38,21 @@ const userSchema = new Schema({
     type: Boolean,
     default: false
   },
-  active: Boolean,
-  role: String,
+  active: {
+    type: Boolean,
+    default: true
+  },
+  role: {
+    type: String,
+    default: 'user'
+  },
   favourite: [
     {
       ref: "Product",
       type: Schema.Types.ObjectId
     }
   ],
-  delivery_adresses: [
+  delivery_addresses: [
     DeliveryAddress
   ],
   invoice_addresses: [

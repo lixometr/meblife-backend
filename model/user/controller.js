@@ -16,8 +16,13 @@ class UserController extends Controller {
     }
     async updateInfo(req, res, next) {
         try {
-            const data = req.body
+            const name = req.body.name
+            const phone = req.body.phone
             let user = req.user
+            user.phone = phone
+            user.name = name
+            await user.save()
+            res.json({ ok: true })
         } catch (err) {
             next(err)
         }

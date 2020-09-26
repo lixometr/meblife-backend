@@ -20,6 +20,15 @@ router.put('/info', isAuth, (...args) => controller.updateInfo(...args))
 router.get('/favourite', isAuth, (...args) => controller.getFavourite(...args))
 router.put('/favourite', isAuth, body('').isArray(), (...args) => controller.updateFavourite(...args))
 
+router.get('/delivery-address', isAuth, (...args) => controller.getDeliveryAddress(...args))
+router.put('/delivery-address', isAuth, (...args) => controller.updateDeliveryAddress(...args))
+
+router.get('/invoice-address', isAuth, (...args) => controller.getInvoiceAddress(...args))
+router.put('/invoice-address', isAuth, (...args) => controller.updateInvoiceAddress(...args))
+router.get('/order', isAuth, (...args) => controller.getOrders(...args))
+// router.delete('/invoice-address/:id', isAuth, (...args) => controller.deleteInvoiceAddressById(...args))
+
+
 router.route('/:id')
   .put(isAuthAdmin, (...args) => controller.updateById(...args))
   .get(isAuthAdmin, (...args) => controller.findById(...args))
