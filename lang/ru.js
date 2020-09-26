@@ -22,11 +22,6 @@ module.exports = {
     required: 'Поле обязательно для заполнения',
     email: 'Введите корректный email'
   },
-  inputName: 'Введите ваше имя и фамиию',
-  inputEmail: 'Введите email',
-  inputPassword: 'Введите пароль',
-  email: 'Email',
-  password: 'Пароль',
   sku: "Номер товара",
   productName: 'Наименование товара',
   delivery: ['все', '24 ч', 'до 14 дней', 'до 30 дней'],

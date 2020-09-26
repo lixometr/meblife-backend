@@ -26,8 +26,10 @@ module.exports = class UserModification extends Modification {
             phone: this.item.phone,
             active: this.item.active,
             role: this.item.role,
-            delivery_adresses: this.item.delivery_adresses,
+            delivery_addresses: this.item.delivery_addresses,
             invoice_addresses: this.item.invoice_addresses,
+            agreement1: this.item.agreement1,
+            agreement2: this.item.agreement2,
         }
     }
 

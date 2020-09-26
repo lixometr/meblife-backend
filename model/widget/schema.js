@@ -17,10 +17,7 @@ const widgetSchema = new Schema({
     type: {},
     default: () => ({})
   },
-  items: {
-    type: [{}],
-    default: () => []
-  }
+
 }, { minimize: false })
 
 module.exports = widgetSchema

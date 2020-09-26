@@ -18,9 +18,22 @@ class UserController extends Controller {
         try {
             const name = req.body.name
             const phone = req.body.phone
+            const agreement1 = req.body.agreement1
+            const agreement2 = req.body.agreement2
+
             let user = req.user
-            user.phone = phone
-            user.name = name
+            if (name !== undefined) {
+                user.name = name
+            }
+            if (phone !== undefined) {
+                user.phone = phone
+            }
+            if (agreement1 !== undefined) {
+                user.agreement1 = agreement1
+            }
+            if (agreement2 !== undefined) {
+                user.agreement2 = agreement2
+            }
             await user.save()
             res.json({ ok: true })
         } catch (err) {
@@ -102,6 +115,64 @@ class UserController extends Controller {
             next(err)
         }
     }
+    async getDeliveryAddresses(req, res, next) {
+        try {
+            const instance = new Modification(req.user, {
+                langId: req.request.language._id,
+                defaultLangId: req.settings.language._id,
+                currency: req.request.currency,
+                defaultCurrency: req.settings.currency
+            })
+            await instance.init()
+            const deliveryAddresses = instance.toJSON().delivery_addresses || []
+            res.json(deliveryAddresses)
+        } catch (err) {
+            next(err)
+        }
+    }
+    async updateDeliveryAddresses(req, res, next) {
+        try {
+            const newAddresses = req.body
+            await this.facade.updateDeliveryAddresses(req.user._id, newAddresses)
+            res.json({ ok: true })
+        } catch (err) {
+            next(err)
+        }
+    }
+    async getInvoiceAddresses(req, res, next) {
+        try {
+            const instance = new Modification(req.user, {
+                langId: req.request.language._id,
+                defaultLangId: req.settings.language._id,
+                currency: req.request.currency,
+                defaultCurrency: req.settings.currency
+            })
+            await instance.init()
+            const invoiceAddresses = instance.toJSON().invoice_addresses || []
+            res.json(invoiceAddresses)
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    async updateInvoiceAddresses(req, res, next) {
+        try {
+            const newAddresses = req.body
+            await this.facade.updateInvoiceAddresses(req.user._id, newAddresses)
+            res.json({ ok: true })
+        } catch (err) {
+            next(err)
+        }
+    }
+    async removeYourself(req, res, next) {
+        try {
+            await this.facade.removeUser(req.user._id.toString())
+            res.json({ ok: true })
+        } catch (err) {
+            next(err)
+        }
+    }
+
 }
 
 module.exports = new UserController(userFacade, Modification)

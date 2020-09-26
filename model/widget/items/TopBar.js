@@ -4,22 +4,39 @@ module.exports = class TopBar extends WidgetModification {
     constructor(...args) {
         super(...args)
         this.schema = {
-            items: [
-                {
-                    title: '',
-                    url: '',
-                    image: ''
-                }
-            ]
+            values: {
+                items: [
+                    {
+                        title: [],
+                        url: [],
+                        icon: {}
+                    },
+                    {
+                        title: [],
+                        url: [],
+                        icon: {}
+                    },
+                    {
+                        title: [],
+                        url: [],
+                        icon: {}
+                    },
+                    {
+                        title: [],
+                        url: [],
+                        icon: {}
+                    },
+                ]
+            }
         }
     }
     translate() {
         super.translate()
-        const items = this.item.items
-        this.item.items = items.map(item => ({
+        const items = this.item.values.items
+        this.item.values.items = items.map(item => ({
             title: this.translateField(item.title),
             url: this.translateField(item.url),
-            image: item.image
+            icon: item.icon
         }))
     }
 

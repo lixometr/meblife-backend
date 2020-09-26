@@ -15,6 +15,8 @@ router.route('/id/:id')
 router.get('/search/:text', isAuthAdmin, (...args) => controller.search(...args))
 router.get('/search/', isAuthAdmin, (...args) => controller.search(...args))
 
+router.get('/area/:area', (...args) => controller.findByArea(...args))
+
 
 router.get('/admin/id/:id', isAuthAdmin, (...args) => controller.findById(...args))
 

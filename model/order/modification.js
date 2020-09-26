@@ -5,8 +5,6 @@ module.exports = class OrderModification extends Modification {
         super(...args)
     }
 
-    toINFO() {
-
-    }
+  
     
 }

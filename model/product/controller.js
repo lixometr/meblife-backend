@@ -170,6 +170,7 @@ class ProductController extends Controller {
     async findByInspirationSlug(req, res, next) {
         const inspiration = await inspirationFacade.findBySlug(req.params.slug, req.request.language.id)
         if (!inspiration) throw new AppError(400)
+        await inspiration.populate('products1').execPopulate()
         const products = inspiration.products1
         this.modifyProducts(req, res, next, products)
     }

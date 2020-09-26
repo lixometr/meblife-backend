@@ -7,7 +7,7 @@ const DeliveryAddress = new Schema({
   city: String,
   phone: String,
   note: String,
-  is_default: Boolean
+  // is_default: Boolean
 })
 const Invoice = new Schema({
   company: String,
@@ -16,8 +16,8 @@ const Invoice = new Schema({
   postal_code: String,
   city: String,
   address: String,
-  is_default: Boolean,
-  note: String
+  // is_default: Boolean,
+
 })
 const userSchema = new Schema({
   email: {
@@ -38,6 +38,7 @@ const userSchema = new Schema({
     type: Boolean,
     default: false
   },
+  // Удалена или нет?
   active: {
     type: Boolean,
     default: true
@@ -58,6 +59,16 @@ const userSchema = new Schema({
   invoice_addresses: [
     Invoice
   ],
+  // policy
+  agreement1: {
+    type: Boolean,
+    default: true
+  },
+  // other
+  agreement2: {
+    type: Boolean,
+    default: true
+  },
   // languageId: String,
   // currencyId: String,
   created_at: {

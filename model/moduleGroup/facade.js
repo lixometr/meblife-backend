@@ -29,6 +29,20 @@ class ModuleGroupFacade extends Facade {
             
         ]
     }
+    async findByArea(area) {
+        const requests = {
+            product: {
+                in_products: true
+            },
+            category: {
+                in_category: true
+            },
+            
+        }
+        const request = requests[area]
+        const items = await this.Model.find(request)
+        return items
+    }
 }
 
 module.exports = new ModuleGroupFacade('ModuleGroup', moduleGroupSchema)

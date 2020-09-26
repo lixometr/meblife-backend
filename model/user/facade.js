@@ -31,7 +31,18 @@ class UserFacade extends Facade {
 
         return result
     }
-    
+    async updateDeliveryAddresses(id, data) {
+        const user = await this.findById(id)
+        user.delivery_addresses = data
+        const result = await user.save()
+        return result
+    }
+    async updateInvoiceAddresses(id, data) {
+        const user = await this.findById(id)
+        user.invoice_addresses = data
+        const result = await user.save()
+        return result
+    }
     async updateFavourite(id, data) {
         const user = await this.findById(id)
         user.favourite = data
@@ -59,7 +70,11 @@ class UserFacade extends Facade {
         user.is_confirmed = true
         user.confirm_key = null
         return await user.save()
-
+    }
+    async removeUser(id) {
+        const user = await this.findById(id)
+        user.active = false
+        await user.save()
     }
 }
 

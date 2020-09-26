@@ -40,13 +40,13 @@ class AuthController extends Controller {
         try {
             const errors = validationResult(req)
             if (!errors.isEmpty()) {
-                throw new AppError(200, null, 'userInvalidData')
+                throw new AppError(200, null, 'invalidData')
             }
             const email = req.body.email
             const password = req.body.password
             const name = req.body.name
             const isExist = await userFacade.findByEmail(email)
-            if (isExist) throw new AppError(409, null, 'userNotFound')
+            if (isExist) throw new AppError(409, null, 'userExist')
             const user = await userFacade.create({
                 email,
                 password,
