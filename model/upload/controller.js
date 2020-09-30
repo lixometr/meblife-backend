@@ -14,19 +14,18 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage, limits: {fileSize: 10 * 1000000} })
+const upload = multer({ storage, limits: { fileSize: 10 * 1000000 } })
 
 class UploadController extends Controller {
     async image(req, res, next) {
         try {
-
             upload.single('image')(req, res, (err) => {
                 if (err instanceof multer.MulterError) {
                     throw new AppError(500, 'Loading File Error')
                 } else if (err) {
                     throw new AppError(500, err)
                 }
-                if(!req.file) {
+                if (!req.file) {
                     throw new AppError(400, 'No file')
                 }
                 const imagePath = `${config.IMAGE_PATH}${req.file.filename}`
@@ -41,7 +40,21 @@ class UploadController extends Controller {
     }
     async file(req, res, next) {
         try {
-
+            upload.single('file')(req, res, (err) => {
+                if (err instanceof multer.MulterError) {
+                    throw new AppError(500, 'Loading File Error')
+                } else if (err) {
+                    throw new AppError(500, err)
+                }
+                if (!req.file) {
+                    throw new AppError(400, 'No file')
+                }
+                const filePath = `${config.FILE_PATH}${req.file.filename}`
+                res.json({
+                    ok: true,
+                    url: filePath,
+                })
+            })
         } catch (err) {
             next(err)
         }

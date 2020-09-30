@@ -19,7 +19,10 @@ const config = {
   langDir: path.join(__dirname, '..', 'lang'),
   errorCodes
 }
+
+// Поменять на поддобмен cdn
 config.IMAGE_PATH = `${config.baseName}/public/`
+config.FILE_PATH = `${config.baseName}/public/`
 if (config.environment === 'development') {
   config.appUrl = 'http://localhost:3000'
 }

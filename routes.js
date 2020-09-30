@@ -23,6 +23,7 @@ const upload = require('./model/upload/router')
 const settings = require('./model/settings/router')
 const page = require('./model/page/router')
 const widget = require('./model/widget/router')
+const promocode = require('./model/promocode/router')
 
 router.route('/').get((req, res) => {
   res.json({
@@ -31,6 +32,8 @@ router.route('/').get((req, res) => {
 })
 router.use('/upload', upload)
 router.use('/widget', widget)
+
+router.use('/promocode', promocode)
 
 router.use('/admin-user', adminUser)
 

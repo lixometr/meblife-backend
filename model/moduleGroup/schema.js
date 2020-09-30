@@ -11,6 +11,7 @@ const moduleGroupSchema = new Schema({
     type: Boolean,
     default: false
   },
+ 
   sort_order: Number,
   modules: [{
     type: Schema.Types.ObjectId,

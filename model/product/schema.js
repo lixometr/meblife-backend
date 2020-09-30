@@ -134,7 +134,10 @@ const ProductSchema = new Schema({
       ref: "Category"
     }
   ],
-  product_files: [File],
+  product_files: {
+    type: [File],
+    default: () => []
+  },
   module_groups_bottom: [
     {
       ref: "ModuleGroup",

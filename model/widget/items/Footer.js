@@ -1,6 +1,23 @@
+const { times } = require("lodash");
 const WidgetModification = require("../modification");
 
 module.exports = class Footer extends WidgetModification {
+    constructor(...args) {
+        super(...args)
+        this.schema = {
+            values: {
+                block1: {
+                    title: '',
+                    items: [
+                        {
+                            title: '',
+                            sub_title: ''
+                        }
+                    ]
+                }
+            }
+        }
+    }
     translate() {
         super.translate()
         const values = this.item.values
@@ -70,9 +87,11 @@ module.exports = class Footer extends WidgetModification {
         this.item.values.block12.title = this.translateField(values.block12.title)
         this.item.values.block12.description = this.translateField(values.block12.description)
         this.item.values.block12.links = this.item.values.block12.links
-
-
-
     }
+    // toINFO() {
+    //     return {
+    //         values: this.item.val
+    //     }
+    // }
 
 }

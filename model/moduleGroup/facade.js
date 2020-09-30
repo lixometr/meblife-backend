@@ -35,9 +35,9 @@ class ModuleGroupFacade extends Facade {
                 in_products: true
             },
             category: {
-                in_category: true
+                in_categories: true
             },
-            
+          
         }
         const request = requests[area]
         const items = await this.Model.find(request)

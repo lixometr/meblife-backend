@@ -166,7 +166,8 @@ module.exports = class ProductModification extends Modification {
             delivery_at: this.item.delivery_at,
             delivery_days: this.item.delivery_days,
             delivery_24: this.item.delivery_24,
-            attributes: this.item.attributes
+            attributes: this.item.attributes,
+            product_files: this.item.product_files || []
         }
     }
 
