@@ -104,6 +104,16 @@ const ProductSchema = new Schema({
       ref: "Product"
     }
   ],
+  // Цвет продуктов
+  product_colors: [
+    {
+      color: String,
+      item: {
+        type: Schema.Types.ObjectId,
+        ref: "Product"
+      }
+    }
+  ],
   attributes: {
     type: [
       {
@@ -173,7 +183,7 @@ ProductSchema.virtual('delivery_days').get(function () {
   if (!this.delivery_at) return
   const diff = this.delivery_at.getTime() - new Date().getTime()
   let days = Math.round(diff / (1000 * 60 * 60 * 24))
-  if(days < 0) days = 0
+  if (days < 0) days = 0
   return days.toString()
 })
 ProductSchema.virtual('delivery_24').get(function () {

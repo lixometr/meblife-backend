@@ -46,16 +46,15 @@ class ProductController extends Controller {
                 }
             })
             const modProducts = await Promise.all(resolvers)
-            if (!searchPhrase) {
-                res.json(modProducts)
-                return
-            }
+    
             const filteredProds = modProducts.filter(product => {
                 return product.full_name.indexOf(searchPhrase) > -1
             })
-            let toSend = await this.facade.paginate({ items: filteredProds, perPage: req.query.per_page, nowPage: req.query.page })
+            const mongFilteredItems = items.filter(item => filteredProds.findIndex(fProd => fProd._id.toString() === item._id.toString()) > -1)
+            this.modifyProducts(req, res, next, mongFilteredItems)
+            // let toSend = await this.facade.paginate({ items: filteredProds, perPage: req.query.per_page, nowPage: req.query.page })
 
-            res.json(toSend)
+            // res.json(toSend)
         } catch (err) {
             next(err)
         }

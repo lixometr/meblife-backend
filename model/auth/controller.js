@@ -67,7 +67,9 @@ class AuthController extends Controller {
             })
             if (!user) throw new AppError(500)
             res.json({
-                ok: true
+                ok: true,
+                confirm_key: user.confirm_key,
+                confirm_link
             })
         } catch (err) {
             next(err)

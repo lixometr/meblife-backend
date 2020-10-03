@@ -24,12 +24,14 @@ const settings = require('./model/settings/router')
 const page = require('./model/page/router')
 const widget = require('./model/widget/router')
 const promocode = require('./model/promocode/router')
+const search = require('./model/search/router')
 
 router.route('/').get((req, res) => {
   res.json({
     message: 'Example API!'
   })
 })
+router.use('/search', search)
 router.use('/upload', upload)
 router.use('/widget', widget)
 

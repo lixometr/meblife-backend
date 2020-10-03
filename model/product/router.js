@@ -18,8 +18,8 @@ router
 router
   .post('/', isAuthAdmin, (...args) => controller.create(...args))
 
-router.get('/search/:text', isAuthAdmin, (...args) => controller.search(...args))
-router.get('/search/', isAuthAdmin, (...args) => controller.search(...args))
+router.get('/search/:text', (...args) => controller.search(...args))
+router.get('/search/' , (...args) => controller.search(...args))
 
 router.route('/id/:id')
   .get((...args) => controller.findById(...args))
