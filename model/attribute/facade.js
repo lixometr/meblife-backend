@@ -14,8 +14,8 @@ class AttributeController extends Facade {
             }
         }, {
             model: "AttributeValue",
-            async resolver({model, id}) {
-                const result = await model.deleteMany({attributeId: id})
+            async resolver({ model, id }) {
+                const result = await model.deleteMany({ attributeId: id })
                 return result
             }
         }]

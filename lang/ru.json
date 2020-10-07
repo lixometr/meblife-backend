@@ -12,7 +12,7 @@
     ],
     "filters": {
         "price": "Цена",
-        "manufacturer": "Производитель",
+        "manufacturer": "Колекция",
         "labels": "Флаги"
     },
     "errors": {

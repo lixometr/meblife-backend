@@ -21,7 +21,7 @@ class AuthController extends Controller {
             const isValid = await userFacade.check(email, password)
             if (!isValid) throw new AppError(200, null, 'userInvalidData')
             const user = await userFacade.findByEmail(email)
-            if(!user.is_confirmed) throw new AppError(404, null, 'userInvalidData')
+            if(!user.is_confirmed) throw new AppError(200, null, 'userInvalidData')
             const expires = remember ? config.JWT_EXPIRES_LONG : config.JWT_EXPIRES
             const token = jwt.sign({ id: user._id, exp: (Date.now() / 1000) + expires }, config.JWT_SECRET)
             const userToSend = new UserModification(user).toINFO()

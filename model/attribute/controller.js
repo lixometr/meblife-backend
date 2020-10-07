@@ -11,14 +11,17 @@ class AttributeController extends Controller {
         try {
             const attr = await this.facade.findById(req.params.id)
             if (!attr) throw new AppError(404)
-            const attributeValues = await this.facade.findValuesById(req.params.id)
-            const resolvers = attributeValues.map(async attrValue => {
+            const items = await this.facade.findValuesById(req.params.id)
+            const resolvers = items.map(async attrValue => {
                 const instance = new AttributeValueModification(attrValue, { langId: req.request.language._id, defaultLangId: req.request.language._id })
                 await instance.init()
                 return instance.toINFO()
             })
-            const items = await Promise.all(resolvers)
-            res.json(items)
+            const values = await Promise.all(resolvers)
+            console.log('values', values)
+            const itemsToSend = await this.facade.paginate({items: values, perPage: req.query.per_page, nowPage: req.query.page})
+            const toSend = itemsToSend
+            res.json(toSend)
         } catch (err) {
             next(err)
         }

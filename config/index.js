@@ -9,7 +9,7 @@ const config = {
   mongo: {
     url: process.env.MONGO_DB_URI || 'mongodb://localhost/example-api'
   },
-  perPage: 2,
+  perPage: 10,
   JWT_SECRET: 'jwt_very_secret_key',
   JWT_ADMIN_SECRET: 'jwt_very_secret_key',
   JWT_EXPIRES: 1 * 60 * 60 * 24,
