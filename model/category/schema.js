@@ -14,6 +14,7 @@ const categorySchema = new Schema({
   },
   slug: {
     type: [Translation],
+    unique: true,
     index: true,
   },
   product_mask: [Translation],

@@ -18,6 +18,8 @@ module.exports = class WidgetModificatin extends Modification {
     }
     async init() {
         this.item = _.merge({}, this.schema, this.item)
+        console.log(this.item)
+
         this.translate()
     }
     toJSON() {
