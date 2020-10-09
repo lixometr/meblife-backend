@@ -4,6 +4,7 @@ const widgetFacade = require('./facade')
 const TopBar = require('./items/TopBar')
 const MainPage = require('./items/MainPage')
 const Footer = require('./items/Footer')
+const HeaderMenu = require('./items/HeaderMenu')
 const Modification = require('./modification')
 class WidgetController extends Controller {
     async findByName(req, res, next) {
@@ -12,6 +13,9 @@ class WidgetController extends Controller {
             if (!item) throw new AppError(404)
             let instance = item
             const name = req.params.name
+            if(req.params.name === 'header_menu') {
+                instance = new HeaderMenu(item, {langId: req.request.language._id, defaultLangId: req.settings.language._id})
+            }
             if (req.params.name === 'top_bar') {
                 instance = new TopBar(item, { langId: req.request.language._id, defaultLangId: req.settings.language._id })
             } else if (name === 'footer') {
