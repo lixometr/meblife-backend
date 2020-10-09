@@ -47,6 +47,7 @@ module.exports = class MainPage extends WidgetModification {
             module_groups: tab.module_groups,
             tab_name: this.translateField(tab.tab_name)
         }))
+        if(!this.item.values)
         this.item.values.slider = this.item.values.slider.map(slide => ({
             title: this.translateField(slide.title),
             sub_title: this.translateField(slide.sub_title),

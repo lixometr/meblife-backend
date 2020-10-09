@@ -17,6 +17,7 @@ module.exports = class WidgetModificatin extends Modification {
         return getLangText(this.langId, this.defaultLangId)(item)
     }
     async init() {
+        this.item = _.merge({}, this.schema, this.item)
         this.translate()
     }
     toJSON() {
