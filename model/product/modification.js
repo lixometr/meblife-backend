@@ -6,6 +6,7 @@ const CategoryModification = require('../category/modification')
 const ManufacturerModification = require('../manufacturer/modification')
 const AttributeGroupModification = require('../attributeGroup/modification')
 const LabelModification = require('../productLabel/modification')
+const ProductModelModification = require('../productModel/modification')
 module.exports = class ProductModification extends Modification {
     constructor(item, options) {
         super(item, options)
@@ -81,6 +82,7 @@ module.exports = class ProductModification extends Modification {
         })
         this.item.manufacturer = new ManufacturerModification(this.item.manufacturer, this.options).translate().toJSON()
         this.item.primary_category = new CategoryModification(this.item.primary_category, this.options).translate().toJSON()
+        this.item.model = new ProductModelModification(this.item.model, this.options)
         this.item.category = this.item.category.map(cat => new CategoryModification(cat, this.options).translate().toJSON())
         this.item.labels = this.item.labels.map(label => new LabelModification(label, this.options).translate().toJSON())
     }
@@ -167,7 +169,8 @@ module.exports = class ProductModification extends Modification {
             delivery_days: this.item.delivery_days,
             delivery_24: this.item.delivery_24,
             attributes: this.item.attributes,
-            product_files: this.item.product_files || []
+            product_files: this.item.product_files || [],
+            model: this.item.model
         }
     }
 

@@ -25,6 +25,7 @@ const page = require('./model/page/router')
 const widget = require('./model/widget/router')
 const promocode = require('./model/promocode/router')
 const search = require('./model/search/router')
+const productModel = require('./model/productModel/router')
 
 router.route('/').get((req, res) => {
   res.json({
@@ -34,6 +35,7 @@ router.route('/').get((req, res) => {
 router.use('/search', search)
 router.use('/upload', upload)
 router.use('/widget', widget)
+router.use('/product-model', productModel)
 
 router.use('/promocode', promocode)
 

@@ -79,6 +79,10 @@ const ProductSchema = new Schema({
     type: Promotion,
     default: () => ({})
   },
+  model: {
+    type: Schema.Types.ObjectId,
+    ref: "ProductModel"
+  },
   // Метки
   labels: {
     type: [
