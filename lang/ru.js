@@ -9,7 +9,7 @@ module.exports = {
   itemSclon: ['товар', 'товара', 'товаров'],
   filters: {
     price: "Цена",
-    manufacturer: "Производитель",
+    manufacturer: "Коллекция",
     labels: "Флаги"
   },
   errors: {
