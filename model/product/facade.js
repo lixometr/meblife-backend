@@ -7,7 +7,7 @@ class ProductFacade extends Facade {
     constructor(...args) {
         super(...args)
         this.fieldsToTranslate = ['name', 'slug', 'description']
-        this.fieldsToPopulate = ['manufacturer', 'category', 'labels', 'attributes.name', 'attributes.value', 'primary_category']
+        this.fieldsToPopulate = ['manufacturer', 'category', 'labels', 'attributes.name', 'attributes.value', 'model', 'primary_category']
         this.relations = [
             {
                 model: "Module",
