@@ -39,6 +39,7 @@ module.exports = class ProductModification extends Modification {
         allValues['name'] = this.item.name
         allValues['sku'] = this.item.sku
         allValues['manufacturer'] = this.item.manufacturer && this.item.manufacturer.name
+        allValues['model'] = this.item.manufacturer && this.item.model.name
         allValues['label'] = this.item.labels.reduce((str, val, idx) => {
             str += val.name
             if (idx < this.item.labels.length - 1) {
@@ -82,7 +83,7 @@ module.exports = class ProductModification extends Modification {
         })
         this.item.manufacturer = new ManufacturerModification(this.item.manufacturer, this.options).translate().toJSON()
         this.item.primary_category = new CategoryModification(this.item.primary_category, this.options).translate().toJSON()
-        this.item.model = new ProductModelModification(this.item.model, this.options)
+        this.item.model = new ProductModelModification(this.item.model, this.options).translate().toJSON()
         this.item.category = this.item.category.map(cat => new CategoryModification(cat, this.options).translate().toJSON())
         this.item.labels = this.item.labels.map(label => new LabelModification(label, this.options).translate().toJSON())
     }
